@@ -15,7 +15,7 @@ authors = [
 keywords = ["cli", "git", "handoff", "codex", "claude"]
 urls = { Homepage = "https://github.com/raul/loghop", Repository = "https://github.com/raul/loghop", Issues = "https://github.com/raul/loghop/issues", Changelog = "https://github.com/raul/loghop/blob/main/CHANGELOG.md" }
 dependencies = [
-    "rich>=14,<15",
+    "rich>=14,<16",
     "tomli-w>=1.0.0,<2",
     "pyyaml>=6.0.1,<7",
 ]
