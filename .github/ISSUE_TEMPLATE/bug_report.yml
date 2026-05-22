@@ -1,0 +1,97 @@
+name: Bug report
+description: Create a report to help us improve loghop
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! Please fill out the form below as completely as possible.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Describe the problem
+      description: A clear and concise description of what the bug is.
+      placeholder: E.g., loghop crashes when launching Claude Code in interactive mode...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How did you run into this bug? Please provide step-by-step instructions.
+      placeholder: |
+        1. Run `loghop init`
+        2. Run `loghop run --provider claude`
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        Paste relevant output from running `loghop --verbose` or from `<repo>/.loghop/loghop.log`.
+        **IMPORTANT: Redact any sensitive information (API keys, secrets, tokens) before submitting.**
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - Linux
+        - macOS
+        - Windows (WSL)
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      placeholder: E.g., 3.12.3
+    validations:
+      required: true
+
+  - type: input
+    id: loghop-version
+    attributes:
+      label: loghop version
+      placeholder: E.g., 0.1.0 (or output of `loghop --version`)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: provider
+    attributes:
+      label: AI Provider
+      description: Which provider were you using when this happened?
+      options:
+        - claude (Claude Code)
+        - codex (OpenAI Codex)
+        - both
+        - none / other
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here (e.g., project config, git setup, or recent environment changes).
+    validations:
+      required: false

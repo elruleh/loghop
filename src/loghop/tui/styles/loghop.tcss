@@ -1,0 +1,632 @@
+/* =========================================================================
+   loghop TUI — visual system
+   - 4-tier text hierarchy (text / soft / muted / quiet)
+   - Brand-soft borders only on focusable widgets
+   - DataTable stays border-less; PreviewPane uses a subtle gutter for focus
+   ========================================================================= */
+
+/* ---------- base ---------- */
+Screen {
+    background: $background;
+    color: $text;
+}
+
+/* ---------- custom chrome ---------- */
+TopBar {
+    height: 1;
+    background: $panel;
+    color: $text;
+}
+
+.top-bar-path {
+    width: 1fr;
+    height: 1;
+    padding: 0 2;
+}
+
+.top-bar-meta {
+    width: auto;
+    min-width: 18;
+    height: 1;
+    padding: 0 2 0 1;
+    text-align: right;
+    color: $text-muted;
+}
+
+CommandBar {
+    height: 1;
+    background: $panel;
+    color: $text-muted;
+}
+
+.command-bar-actions {
+    width: 1fr;
+    height: 1;
+    padding: 0 2;
+}
+
+.command-bar-status {
+    width: auto;
+    min-width: 18;
+    height: 1;
+    padding: 0 2 0 1;
+    text-align: right;
+    color: $text-quiet;
+}
+
+/* ---------- command palette ---------- */
+CommandPalette {
+    background: $background 72%;
+    align-horizontal: center;
+    align-vertical: top;
+}
+
+CommandPalette > Vertical {
+    width: 82;
+    max-width: 92%;
+    height: auto;
+    max-height: 82%;
+    margin-top: 2;
+    background: $surface;
+    border: round $border-quiet;
+}
+
+CommandPalette #--input {
+    height: 3;
+    background: $panel;
+    border: none;
+    border-bottom: hkey $border-quiet;
+}
+
+CommandPalette #--input.--list-visible {
+    border-bottom: hkey $border-quiet;
+}
+
+SearchIcon {
+    display: none;
+    width: 0;
+    margin: 0;
+}
+
+CommandPalette CommandInput,
+CommandPalette CommandInput:focus {
+    height: 3;
+    margin-top: 0;
+    padding: 0 1;
+    background: $panel;
+    border: none;
+}
+
+CommandPalette CommandList {
+    max-height: 62vh;
+    background: $surface;
+    border: none;
+}
+
+CommandPalette CommandList > .option-list--option {
+    padding: 0 2;
+    color: $text;
+    text-style: not bold;
+}
+
+CommandPalette CommandList > .option-list--option-highlighted {
+    background: $surface-hover;
+    color: $text;
+    text-style: bold;
+}
+
+CommandPalette LoadingIndicator {
+    border: none;
+    background: $surface;
+}
+
+/* ---------- text tiers (utility classes) ---------- */
+.soft  { color: $text-soft; }
+.muted { color: $text-muted; }
+.quiet { color: $text-quiet; }
+
+.warning-text { color: $warning; }
+.error-text   { color: $error; }
+.success-text { color: $success; }
+
+/* ---------- list columns — focus indicator ---------- */
+
+#projects-list-col,
+#sessions-list-col {
+    border-left: vkey transparent;
+}
+
+#projects-list-col:focus-within,
+#sessions-list-col:focus-within {
+    border-left: vkey $brand 40%;
+}
+
+/* =========================================================================
+   DataTable — border-less, header in soft tone
+   ========================================================================= */
+DataTable {
+    background: $surface;
+    height: 1fr;
+}
+
+DataTable:focus {
+    background-tint: transparent;
+}
+
+DataTable > .datatable--cursor {
+    background: $brand 30%;
+    color: $text;
+}
+
+DataTable:focus > .datatable--cursor {
+    background: $brand;
+    color: $background;
+    text-style: bold;
+}
+
+DataTable > .datatable--header {
+    background: $panel;
+    color: $text-muted;
+}
+
+DataTable > .datatable--header-hover {
+    background: $surface-hover;
+}
+
+/* ---------- Inputs — keep border (signal of input field) ---------- */
+Input {
+    margin-top: 1;
+    background: $panel;
+    color: $text;
+    border: round $border-quiet;
+    padding: 0 1;
+}
+
+Input:focus {
+    border: round $border-strong;
+}
+
+Button {
+    min-width: 12;
+    margin-right: 1;
+}
+
+Button.-primary {
+    background: $brand;
+    color: $background;
+    text-style: bold;
+}
+
+Button.-primary:hover {
+    background: $brand-strong;
+}
+
+/* =========================================================================
+   PreviewPane — subtle gutter; rhythm via spacing, not boxes
+   ========================================================================= */
+PreviewPane {
+    width: 1fr;
+    padding: 1 2;
+    background: $surface;
+    border-left: vkey $border-quiet;
+}
+
+PreviewPane:focus {
+    border-left: vkey $brand;
+    background: $surface-hover;
+}
+
+.preview-fixed {
+    height: auto;
+}
+
+.preview-scroll {
+    height: 1fr;
+    overflow-y: auto;
+}
+
+.preview-footer {
+    height: auto;
+    border-top: hkey $border-quiet;
+    padding-top: 1;
+    margin-top: 1;
+}
+
+#preview-empty,
+.preview-empty {
+    color: $text-muted;
+    content-align: center middle;
+    height: 1fr;
+    text-align: center;
+}
+
+/* Hero block (title + inline meta) */
+.preview-hero {
+    height: auto;
+    margin-bottom: 1;
+}
+
+.preview-hero-title {
+    text-style: bold;
+    height: auto;
+}
+
+.preview-hero-meta {
+    color: $text-muted;
+    height: auto;
+}
+
+.preview-hero-row {
+    height: auto;
+}
+
+.preview-hero-meta-secondary {
+    color: $text-quiet;
+}
+
+/* Body sections — separated by subtle dividers */
+.preview-section-title {
+    color: $text-muted;
+    text-style: bold;
+    height: 1;
+    border-top: tall $border-quiet;
+    padding-top: 1;
+}
+
+.preview-section-body {
+    height: auto;
+    margin-bottom: 1;
+}
+
+.preview-section {
+    height: auto;
+    margin-top: 1;
+}
+
+.preview-section-compact {
+    margin-top: 0;
+}
+
+/* Action panel (legacy — kept for non-redesigned screens) */
+.preview-actions {
+    height: auto;
+    padding: 0;
+}
+
+.preview-actions-title {
+    color: $text-muted;
+    text-style: bold;
+    height: 1;
+}
+
+.preview-actions-subtitle {
+    color: $text-muted;
+    margin-bottom: 1;
+    height: auto;
+}
+
+.preview-hint {
+    color: $text-quiet;
+    margin-top: 1;
+    height: auto;
+}
+
+.resume-row {
+    height: auto;
+}
+
+.resume-row Button {
+    width: auto;
+    min-width: 10;
+    margin-right: 1;
+}
+
+.resume-empty {
+    color: $warning;
+    height: auto;
+}
+
+/* =========================================================================
+   FilterChips
+   ========================================================================= */
+.filter-chips {
+    height: 1;
+    padding: 0 2;
+    color: $text-muted;
+}
+
+/* =========================================================================
+   HomeScreen — Projects
+   ========================================================================= */
+#project-search {
+    margin: 1 2;
+    height: 3;
+}
+
+#projects-body {
+    height: 1fr;
+    margin: 1 2;
+}
+
+#projects-list-col {
+    width: 3fr;
+    margin-right: 1;
+}
+
+#project-table {
+    margin: 0;
+}
+
+#projects-empty {
+    color: $text-muted;
+    content-align: center middle;
+    height: 1fr;
+    text-align: center;
+    display: none;
+}
+
+#project-preview {
+    width: 2fr;
+}
+
+/* =========================================================================
+   ProjectScreen — Sessions
+   ========================================================================= */
+#filter-search {
+    margin: 0 2;
+    height: 3;
+}
+
+#filter-chips {
+    margin: 0 2 1 2;
+    height: auto;
+    min-height: 1;
+}
+
+.filter-chip {
+    width: auto;
+    height: 1;
+    margin-right: 1;
+}
+
+.filter-chip:hover {
+    text-style: bold;
+}
+
+.filter-chip:focus {
+    text-style: bold reverse;
+}
+
+.filter-count {
+    width: auto;
+    height: 1;
+}
+
+#sessions-body {
+    height: 1fr;
+    margin: 0 2 1 2;
+}
+
+#sessions-list-col {
+    width: 4fr;
+    margin-right: 1;
+}
+
+#session-table {
+    margin: 0;
+}
+
+#sessions-empty {
+    color: $text-muted;
+    content-align: center middle;
+    height: 1fr;
+    text-align: center;
+    display: none;
+}
+
+#session-preview {
+    width: 2fr;
+}
+
+/* =========================================================================
+   AddFolderModal — modals keep borders (elevated surfaces)
+   ========================================================================= */
+AddFolderModal {
+    align: center middle;
+    background: $surface 60%;
+}
+
+#add-container {
+    background: $background;
+    border: round $brand;
+    padding: 1 2;
+    width: 70;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+}
+
+#add-title {
+    color: $brand;
+    text-style: bold;
+    margin-bottom: 1;
+    border-bottom: hkey $border-quiet;
+    padding-bottom: 1;
+}
+
+#add-path {
+    margin-top: 1;
+}
+
+#add-status {
+    margin-top: 1;
+    height: auto;
+}
+
+#add-hint {
+    margin-top: 1;
+    height: auto;
+}
+
+#add-tree {
+    margin-top: 0;
+    height: 10;
+    background: $surface-hover;
+    border: round $border-quiet;
+    overflow-y: auto;
+}
+
+#add-tree:focus-within {
+    border: round $border-strong;
+}
+
+#add-recent-label {
+    margin-top: 1;
+    color: $text-muted;
+    text-style: bold;
+}
+
+#add-recent-list {
+    max-height: 6;
+    background: $surface-hover;
+    margin-top: 1;
+}
+
+#add-recent-list ListItem {
+    padding: 0 1;
+}
+
+#add-recent-list ListItem.--highlight {
+    background: $brand 30%;
+}
+
+#add-buttons {
+    layout: horizontal;
+    height: auto;
+    margin-top: 1;
+    align-horizontal: right;
+}
+
+/* =========================================================================
+   ConfirmModal — destructive-action confirmation
+   ========================================================================= */
+ConfirmModal {
+    align: center middle;
+    background: $surface 60%;
+}
+
+#confirm-container {
+    background: $background;
+    border: round $error;
+    padding: 1 2;
+    width: 64;
+    max-width: 90%;
+    height: auto;
+    max-height: 80%;
+}
+
+#confirm-title {
+    color: $error;
+    text-style: bold;
+    margin-bottom: 1;
+    border-bottom: hkey $border-quiet;
+    padding-bottom: 1;
+}
+
+#confirm-message {
+    height: auto;
+    margin-bottom: 1;
+    color: $text;
+}
+
+#confirm-warning {
+    color: $error;
+    text-style: bold;
+    margin-bottom: 1;
+    height: auto;
+}
+
+#confirm-buttons {
+    layout: horizontal;
+    height: auto;
+    margin-top: 1;
+    align-horizontal: right;
+}
+
+#btn-confirm-ok {
+    background: $error;
+    color: $background;
+    text-style: bold;
+}
+
+/* =========================================================================
+   HelpScreen
+   ========================================================================= */
+HelpScreen {
+    align: center middle;
+    background: $surface 70%;
+}
+
+#help-container {
+    background: $background;
+    border: round $brand;
+    padding: 1 2;
+    width: 70;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+}
+
+#help-title {
+    color: $brand;
+    text-style: bold;
+    border-bottom: hkey $border-quiet;
+    padding-bottom: 1;
+    margin-bottom: 1;
+}
+
+#help-body {
+    height: auto;
+    max-height: 24;
+}
+
+.help-section {
+    margin-bottom: 1;
+    height: auto;
+}
+
+#help-hint {
+    margin-top: 1;
+    text-align: center;
+    color: $text-muted;
+}
+
+/* =========================================================================
+   Responsive — narrow terminal layout (< 80 cols)
+   ========================================================================= */
+.narrow #projects-body,
+.narrow #sessions-body {
+    layout: vertical;
+}
+
+.narrow #projects-list-col,
+.narrow #sessions-list-col {
+    width: 1fr;
+    margin-right: 0;
+    height: 1fr;
+}
+
+.narrow #project-preview,
+.narrow #session-preview {
+    width: 1fr;
+    height: auto;
+    max-height: 14;
+}
+
+.narrow #session-preview {
+    min-height: 0;
+}
+
+.narrow.preview-open #session-preview {
+    height: 12;
+}

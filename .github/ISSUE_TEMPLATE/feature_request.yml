@@ -1,0 +1,50 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make loghop better? Please share it!
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What user need does this address? What problem are you trying to solve?
+      placeholder: E.g., I want to be able to switch to Gemini as a provider because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe how you think the feature should work.
+      placeholder: E.g., Add a new flag `--provider gemini` which reads from...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other options have you considered? Why is this proposed approach better?
+    validations:
+      required: false
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation notes
+      description: "Optional: describe any API, CLI, configuration, or compatibility details that matter."
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add workflow details, similar tools, screenshots, or relevant links.
+    validations:
+      required: false
