@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & Discussion
+    url: https://github.com/raul/loghop/discussions
+    about: Ask questions, share ideas, and discuss with the community
+  - name: Security Advisories
+    url: https://github.com/raul/loghop/security/advisories/new
+    about: Report security vulnerabilities (private channel)

@@ -1,0 +1,73 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+.venv-*/
+venv/
+env/
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test and tooling caches
+.coverage
+coverage.json
+coverage.xml
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tmp/
+.crush/
+.pipx/
+.uv-home/
+.superpowers/
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
+pi-session-*.html
+
+# Sensitive files
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.log
+
+# Database files
+*.sqlite
+*.db
+
+.loghop/
+
+# Local agent metadata / vendored skills
+.agents/
+.claude/
+.factory/
+skills-lock.json
+
+# Internal/generated docs and media (not for public release)
+docs/superpowers/
+docs/video/
+
+# Generated memory files
+loghop.md
+memory.md
+
+# Security scan output
+bandit-report.json
+
+# Backup files
+*.loghop.bak
+
+# Throwaway fix scripts
+fix_*.py

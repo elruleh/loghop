@@ -1,0 +1,28 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 2c9f875913ee60ca25ce70243dc24d5b6415598c  # v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+        exclude: ^tests/test_redaction_expanded\.py$
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: c60c980e561ed3e73101667fe8365c609d19a438  # v0.15.9 (closest to venv ruff 0.15.13)
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: d4911cfb7f1010759fde68da196036feeb25b99d  # v1.11.2
+    hooks:
+      - id: mypy
+        args: [--config-file=pyproject.toml]
+        additional_dependencies: [pytest, rich, "textual>=2,<3", tomli-w, types-PyYAML]
+        pass_filenames: false
+        always_run: true

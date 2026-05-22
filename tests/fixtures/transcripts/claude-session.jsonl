@@ -1,0 +1,2 @@
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"Resume the auth work."}]},"timestamp":"2026-04-24T10:00:00Z"}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"Decision: keep the parser strict."},{"type":"tool_use","name":"Read"}]},"timestamp":"2026-04-24T10:00:05Z"}
