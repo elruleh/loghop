@@ -78,8 +78,10 @@ Sensitive reads use no-follow semantics where available. Directory creation walk
 Session and handoff markdown files include an HMAC signature in frontmatter:
 
 ```yaml
-_signature: 0123456789abcdef
+_signature: 0123456789abcdef0123456789abcdef
 ```
+
+New signatures are 32 hex characters. Existing 16-character signatures remain valid for backward compatibility.
 
 The signature covers both metadata and markdown body. It detects local tampering in `.loghop/`; it does not encrypt content and it does not protect against a user or process that can also read/write `.loghop/integrity.key`.
 
