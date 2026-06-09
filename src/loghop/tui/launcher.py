@@ -1,7 +1,7 @@
 import shlex
 import shutil
 import subprocess  # nosec B404
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from pathlib import Path
 
 from loghop import env
@@ -57,12 +57,126 @@ def _bash_lc(cmd: str) -> list[str]:
     return ["bash", "-ic", f"{profile_prelude}; {cmd}; exec bash -l"]
 
 
-def _build_gnome_terminal(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["gnome-terminal", "--title", title]
-    if workdir:
-        args.extend(["--working-directory", workdir])
-    args.extend(["--", *_bash_lc(safe_cmd)])
-    return args
+class _TerminalSpec:
+    """Declarative description of how a terminal emulator accepts a command.
+
+    The previous implementation had one ~10-line function per terminal
+    (gnome-terminal, konsole, xfce4-terminal, tilix, alacritty, kitty,
+    wezterm, xterm, tmux). 9 functions doing roughly the same thing made
+    adding a new emulator tedious and prone to drift. ``_TerminalSpec``
+    captures the variations as data:
+
+    * ``binary``  – the executable name to spawn.
+    * ``title_flag`` – ``("-T", "title")`` or similar pair, with a callable
+      that converts the user-facing ``title`` into the form the terminal
+      expects.
+    * ``workdir_arg`` – ``"--working-directory"`` style flag + value flag;
+      ``None`` means the terminal does not support an explicit workdir.
+    * ``exec_separator`` – argv list inserted between the terminal's own
+      flags and the bash command (e.g. ``-e`` for xterm, ``-x`` for
+      xfce4-terminal, or empty for terminals like tmux/wezterm).
+    * ``inline_workdir`` – if True, ``cd <workdir> &&`` is prepended inside
+      the bash invocation rather than passed as a separate flag (needed for
+      wezterm/xterm which don't accept workdir).
+    """
+
+    __slots__ = (
+        "binary",
+        "title_flag",
+        "workdir_arg",
+        "exec_separator",
+        "inline_workdir",
+    )
+
+    def __init__(
+        self,
+        binary: str,
+        title_flag: tuple[str, Callable[[str], str]] | None,
+        workdir_arg: str | None,
+        exec_separator: list[str],
+        *,
+        inline_workdir: bool = False,
+    ) -> None:
+        self.binary = binary
+        self.title_flag = title_flag
+        self.workdir_arg = workdir_arg
+        self.exec_separator = list(exec_separator)
+        self.inline_workdir = inline_workdir
+
+    def build(self, safe_cmd: str, workdir: str | None, title: str) -> list[str]:
+        args: list[str] = [self.binary]
+        if self.title_flag is not None:
+            flag, formatter = self.title_flag
+            args.extend([flag, formatter(title)])
+        if workdir and self.workdir_arg:
+            args.extend([self.workdir_arg, workdir])
+        bash_payload = safe_cmd
+        if workdir and self.inline_workdir:
+            bash_payload = f"cd {shlex.quote(workdir)} && {safe_cmd}"
+        args.extend(self.exec_separator)
+        args.extend(_bash_lc(bash_payload))
+        return args
+
+
+def _format_title_kv(title: str) -> str:
+    return f"tabtitle={title}"
+
+
+_TERMINAL_SPECS: dict[str, _TerminalSpec] = {
+    # Native flag + value, no workdir flag (uses inline cd).
+    "xterm": _TerminalSpec(
+        binary="xterm",
+        title_flag=("-T", str),
+        workdir_arg=None,
+        exec_separator=["-e"],
+        inline_workdir=True,
+    ),
+    "tmux": _TerminalSpec(
+        binary="tmux",
+        title_flag=("-n", str),
+        workdir_arg="-c",
+        exec_separator=["new-window"],
+    ),
+    # Native flag + value, with native workdir flag.
+    "gnome-terminal": _TerminalSpec(
+        binary="gnome-terminal",
+        title_flag=("--title", str),
+        workdir_arg="--working-directory",
+        exec_separator=["--"],
+    ),
+    "xfce4-terminal": _TerminalSpec(
+        binary="xfce4-terminal",
+        title_flag=("--title", str),
+        workdir_arg="--working-directory",
+        exec_separator=["-x"],
+    ),
+    "tilix": _TerminalSpec(
+        binary="tilix",
+        title_flag=("--title", str),
+        workdir_arg="--working-directory",
+        exec_separator=["-x"],
+    ),
+    "alacritty": _TerminalSpec(
+        binary="alacritty",
+        title_flag=("-t", str),
+        workdir_arg="--working-directory",
+        exec_separator=["-e"],
+    ),
+    "kitty": _TerminalSpec(
+        binary="kitty",
+        title_flag=("--title", str),
+        workdir_arg="--directory",
+        exec_separator=[],
+    ),
+    # wezterm needs the workdir inlined because `cli spawn` has no flag for it.
+    "wezterm": _TerminalSpec(
+        binary="wezterm",
+        title_flag=None,
+        workdir_arg=None,
+        exec_separator=["cli", "spawn", "--"],
+        inline_workdir=True,
+    ),
+}
 
 
 def _build_konsole(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
@@ -70,64 +184,6 @@ def _build_konsole(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
     if workdir:
         args.extend(["-p", f"Directory={workdir}"])
     args.extend(["-e", *_bash_lc(safe_cmd)])
-    return args
-
-
-def _build_xfce4_terminal(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["xfce4-terminal", "--title", title]
-    if workdir:
-        args.extend(["--working-directory", workdir])
-    args.extend(["-x", *_bash_lc(safe_cmd)])
-    return args
-
-
-def _build_tilix(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["tilix", "--title", title]
-    if workdir:
-        args.extend(["--working-directory", workdir])
-    args.extend(["-x", *_bash_lc(safe_cmd)])
-    return args
-
-
-def _build_alacritty(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["alacritty", "-t", title]
-    if workdir:
-        args.extend(["--working-directory", workdir])
-    args.extend(["-e", *_bash_lc(safe_cmd)])
-    return args
-
-
-def _build_kitty(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["kitty", "--title", title]
-    if workdir:
-        args.extend(["--directory", workdir])
-    args.extend(_bash_lc(safe_cmd))
-    return args
-
-
-def _build_wezterm(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["wezterm", "cli", "spawn", "--"]
-    if workdir:
-        args.extend(_bash_lc(f"cd {shlex.quote(workdir)} && {safe_cmd}"))
-    else:
-        args.extend(_bash_lc(safe_cmd))
-    return args
-
-
-def _build_xterm(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["xterm", "-T", title]
-    if workdir:
-        args.extend(["-e", *_bash_lc(f"cd {shlex.quote(workdir)} && {safe_cmd}")])
-    else:
-        args.extend(["-e", *_bash_lc(safe_cmd)])
-    return args
-
-
-def _build_tmux(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
-    args = ["tmux", "new-window", "-n", title]
-    if workdir:
-        args.extend(["-c", workdir])
-    args.extend(_bash_lc(safe_cmd))
     return args
 
 
@@ -150,15 +206,15 @@ def _build_wt_exe(safe_cmd: str, workdir: str | None, title: str) -> list[str]:
 
 
 _TERMINAL_BUILDERS: dict[str, object] = {
-    "gnome-terminal": _build_gnome_terminal,
-    "konsole": _build_konsole,
-    "xfce4-terminal": _build_xfce4_terminal,
-    "tilix": _build_tilix,
-    "alacritty": _build_alacritty,
-    "kitty": _build_kitty,
-    "wezterm": _build_wezterm,
-    "xterm": _build_xterm,
-    "tmux": _build_tmux,
+    "gnome-terminal": _TERMINAL_SPECS["gnome-terminal"].build,
+    "konsole": _build_konsole,  # uses key=value, keep dedicated
+    "xfce4-terminal": _TERMINAL_SPECS["xfce4-terminal"].build,
+    "tilix": _TERMINAL_SPECS["tilix"].build,
+    "alacritty": _TERMINAL_SPECS["alacritty"].build,
+    "kitty": _TERMINAL_SPECS["kitty"].build,
+    "wezterm": _TERMINAL_SPECS["wezterm"].build,
+    "xterm": _TERMINAL_SPECS["xterm"].build,
+    "tmux": _TERMINAL_SPECS["tmux"].build,
     "wt.exe": _build_wt_exe,
 }
 
