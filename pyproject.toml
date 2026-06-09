@@ -74,6 +74,9 @@ ignore = ["E501"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra"
+markers = [
+    "slow: tests that exercise the Textual app via Pilot (>=2s per test)",
+]
 
 [tool.coverage.run]
 source = ["src/loghop"]

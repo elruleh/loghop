@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from loghop.tui.app import create_app
 from loghop.tui.format import format_duration
 from loghop.tui.i18n import set_language, tr
@@ -23,6 +25,8 @@ from loghop.tui.screens._project_vm import (
 from loghop.tui.screens.help import _session_rows
 from loghop.tui.screens.project import ProjectScreen
 from loghop.tui.services import TuiService
+
+pytestmark = pytest.mark.slow
 
 
 def _make_session(**overrides) -> Any:

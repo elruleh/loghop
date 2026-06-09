@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- TUI tests for screen-state helpers, list-screen search parser, and the new declarative terminal specs (`tests/test_tui_screen_state.py`, `tests/test_launcher_specs.py`).
+- `pytest.mark.slow` marker for TUI tests that need a real pilot; `pytest -m "not slow"` skips them in the inner loop.
+- Tests for redaction cache invalidation by config mtime, TTL-bounded Claude shell-env probe cache, `_expand_doublestar` globbing, `project_lock` reentrancy, and threading serialisation.
+- Tests for the redaction pipeline's edge cases (short Slack tokens, idempotence, double-redaction).
+
+### Changed
+- Redaction custom-pattern cache now invalidates on config-file mtime changes; edits to `~/.loghop/config.toml` or `<project>/.loghop/config.toml` take effect on the next call without a process restart.
+- Claude shell-env probe cache switched from `lru_cache` (process-lifetime) to a 30-second TTL bounded dict; new `ANTHROPIC_*` exports in the current shell become visible after the window expires.
+- TUI terminal-launcher builders refactored from nine near-duplicate functions to a declarative `_TerminalSpec` table; only `konsole` (key=value style) and `wt.exe` (WSL script) keep dedicated builders.
+- Slack token regex tightened with a minimum length (8 chars after prefix) to avoid over-redacting short placeholders in docs and logs.
+- TUI test files reorganised so `pytestmark = pytest.mark.slow` is declared after imports.
+- `release_check.sh` now comments on the slow vs fast test split.
+
+### Fixed
+- Redaction pipeline's eager `find_project_root` call would propagate `KeyboardInterrupt` from a test-mocked `subprocess.run`; the lookup helper now catches `BaseException` so redaction can never escape a path-discovery failure into the runner.
+
+### Documentation
+- README clarifies Linux/macOS as the supported production target and explains Windows best-effort behaviour.
+- `reference/configuration.md` documents that custom redaction edits apply on the next call (mtime-based cache invalidation) and that the Claude shell-env probe is cached for 30 seconds.
+
 ## [0.1.1] - 2026-06-03
 
 ### Added

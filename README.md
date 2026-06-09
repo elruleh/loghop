@@ -83,7 +83,7 @@ cleanly. No lost decisions, no repeated work, no copy-pasting summaries between 
 
 ## Install
 
-Python 3.12+, Git, Linux/macOS/Windows.
+Python 3.12+, Git, Linux/macOS. Windows is best-effort: the core CLI works, but a few optional hooks (POSIX PATH shim, `bash -c env -0` shell probe for Claude credentials) gracefully degrade or disable themselves on non-POSIX shells.
 
 ```bash
 pipx install loghop
@@ -287,7 +287,7 @@ needed. Run `loghop providers` to see what's available.
 
 ## Security
 
-- All files under `.loghop/` are written with mode `0o600`; directories are `0o700`.
+- All files under `.loghop/` are written with mode `0o600` on POSIX; on Windows the same `0600`/`0700` intent is applied via `os.chmod` best-effort, but the OS may map these differently.
 - Atomic writes via `tempfile.mkstemp` + `os.replace` + `fsync`.
 - `loghop health`, `loghop metrics`, `loghop backup`, and `loghop migrate` support operational checks, observability, recovery, and schema upgrades.
 - File reads reject symlinks; `.loghop/` paths are validated before use.

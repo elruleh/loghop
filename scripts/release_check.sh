@@ -18,6 +18,9 @@ run_qa() {
   uv export --all-extras --dev --format requirements-txt --no-emit-project --no-hashes > "$audit_requirements"
   uv run --all-extras pip-audit -r "$audit_requirements" --desc
   uv run --all-extras pytest --cov=loghop --cov-report=term-missing --cov-fail-under=80
+  # Slow TUI tests run on every release, but the developer inner loop can
+  # skip them with ``pytest -m "not slow"``.
+  echo "Release QA gates passed (including slow TUI suite)."
 }
 
 run_build() {

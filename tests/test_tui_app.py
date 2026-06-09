@@ -13,6 +13,8 @@ from loghop.tui.i18n import get_language, set_language, tr
 from loghop.tui.services import TuiService
 from loghop.tui.widgets.chrome import CommandBar, TopBar
 
+pytestmark = pytest.mark.slow
+
 
 def _make_mock_service() -> Any:
     """Create a mock TuiService with standard test data."""

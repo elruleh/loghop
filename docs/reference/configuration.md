@@ -119,7 +119,7 @@ Use `loghop projects cleanup` to remove registry entries whose paths no longer e
 | `LOGHOP_LOG_BACKUP_COUNT` | Number of rotated log files to keep |
 | `LOGHOP_PROVIDER_AUTH_RETRIES` | Claude auth preflight retry count |
 | `LOGHOP_PROVIDER_AUTH_RETRY_DELAY_MS` | Delay between auth preflight retries |
-| `LOGHOP_DISABLE_CLAUDE_SHELL_ENV_PROBE` | Set to `1` to disable interactive shell env probing for Claude credentials |
+| `LOGHOP_DISABLE_CLAUDE_SHELL_ENV_PROBE` | Set to `1` to disable interactive shell env probing for Claude credentials. The probe is also cached in-process for 30 seconds; new `ANTHROPIC_*` exports in the current shell become visible after that window expires. |
 | `LOGHOP_NO_COLOR` / `NO_COLOR` | Disable colored output |
 | `LOGHOP_ASCII` | Use ASCII-safe glyphs in terminal output |
 | `LOGHOP_LANG` / `LANGUAGE` / `LANG` | Language preference for localized TUI text |
@@ -151,6 +151,8 @@ replacement = '\1=[redacted custom token]'
 |-------|------|-------------|
 | `pattern` | String | A regular expression pattern to search for. Must be a valid Python regex pattern. Remember to escape special characters appropriately in TOML (e.g. use double backslashes `\\` in double-quoted strings, or single quotes for literal strings where no backslash escaping is needed). |
 | `replacement` | String | The replacement text. Supports regex group backreferences (e.g., `\1`). |
+
+Edits to the redaction list take effect on the next redaction call: loghop invalidates its in-process pattern cache by detecting the file's mtime change, so there is no need to restart the process.
 
 ---
 

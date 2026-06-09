@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from loghop.tui.app import create_app
 from loghop.tui.i18n import set_language
 from loghop.tui.screens._home_vm import (
@@ -22,6 +24,8 @@ from loghop.tui.screens._home_vm import (
 )
 from loghop.tui.screens.home import HomeScreen
 from loghop.tui.services import TuiService
+
+pytestmark = pytest.mark.slow
 
 
 def _make_project(**overrides) -> Any:
