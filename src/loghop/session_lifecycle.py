@@ -62,7 +62,18 @@ def finalize_session(
     ctx: SessionContext,
     opts: FinalizeOptions,
 ) -> SessionMeta:
-    """Finalize a session with consistent changed-file capture and logging."""
+    """Finalize a session with consistent changed-file capture and logging.
+
+    The two-except layout is intentional: the first clause matches every
+    ``Exception`` (and re-raises so callers still see the failure), while the
+    second clause matches ``BaseException`` subclasses that escape
+    ``Exception`` -- chiefly ``KeyboardInterrupt``, ``SystemExit`` and
+    ``GeneratorExit`` arriving mid-finalize from an outer ``finally``. For
+    those we make a best-effort attempt to write a partial session record
+    before propagating the original interrupt. Without this branch, hitting
+    Ctrl-C while the lock and ``finish_session`` are mid-flight would leave
+    the session marked ``running`` until ``loghop doctor`` sweeps it.
+    """
     finished = False
     try:
         changed = (

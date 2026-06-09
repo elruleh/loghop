@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import Any
 
 SECRET_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
@@ -69,7 +70,11 @@ SECRET_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
         "[redacted npm token]",
     ),
     (
-        re.compile(r"(?i)\b(sk-|pk_live_|sk_live_|tok_|xox[bposa]-)[\w-]+"),
+        # Generic prefixed secrets. Slack tokens (xoxa/b/p/s-) are at least
+        # 8 chars after the prefix to avoid matching the literal ``xoxa-``
+        # that may appear in docs/logs. The OpenAI/Anthropic/etc. specific
+        # patterns below catch the modern formats with stricter shape.
+        re.compile(r"(?i)\b(sk-|pk_live_|sk_live_|tok_|xox[bposa]-)[\w-]{8,}"),
         "[redacted api key]",
     ),
     (
@@ -109,7 +114,7 @@ SECRET_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
         "[redacted sendgrid key]",
     ),
     (
-        re.compile(r"xox[cbarsp]-[A-Za-z0-9-]+"),
+        re.compile(r"xox[cbarsp]-[A-Za-z0-9-]{8,}"),
         "[redacted slack token]",
     ),
     (
@@ -143,13 +148,63 @@ SECRET_PATTERNS: tuple[tuple[re.Pattern[str], str], ...] = (
 )
 
 
-_custom_patterns: list[tuple[re.Pattern[str], str]] | None = None
+_CACHE_KEY: tuple[tuple[int | None, ...], tuple[str, ...]] | None = None
+_CACHED_PATTERNS: list[tuple[re.Pattern[str], str]] = []
+
+
+def _source_paths() -> list[Path]:
+    """Return the (possibly empty) list of config files that define custom patterns.
+
+    This helper is called on every redaction call (to compute a cache
+    signature) and must never raise. ``find_project_root`` shells out to
+    ``git rev-parse`` via ``subprocess.run``; if the caller has mocked
+    ``subprocess.run`` (e.g. to simulate a ``KeyboardInterrupt`` during a
+    runner test) the lookup must be skipped, not propagated.
+    """
+    paths: list[Path] = []
+    try:
+        from loghop.install._config import global_config_path
+
+        paths.append(global_config_path())
+    except BaseException:  # noqa: BLE001
+        pass
+    try:
+        from loghop.store import find_project_root
+
+        root = find_project_root(Path.cwd())
+        if root is not None:
+            paths.append(root / ".loghop" / "config.toml")
+    except BaseException:  # noqa: BLE001
+        pass
+    return paths
+
+
+def _cache_signature() -> tuple[tuple[int | None, ...], tuple[str, ...]]:
+    """Hash the current state of the config files so cache invalidates on edit.
+
+    The signature combines the stat().st_mtime_ns of each candidate file with
+    its resolved path. Edits, replacements, or moves invalidate the cache
+    without the process having to be restarted.
+    """
+    mtimes: list[int | None] = []
+    resolved: list[str] = []
+    for path in _source_paths():
+        try:
+            mtimes.append(path.stat().st_mtime_ns)
+        except OSError:
+            mtimes.append(None)
+        try:
+            resolved.append(str(path.resolve()))
+        except OSError:
+            resolved.append(str(path))
+    return (tuple(mtimes), tuple(resolved))
 
 
 def get_redaction_patterns() -> list[tuple[re.Pattern[str], str]]:
-    global _custom_patterns
-    if _custom_patterns is not None:
-        return _custom_patterns
+    global _CACHE_KEY, _CACHED_PATTERNS
+    signature = _cache_signature()
+    if _CACHE_KEY is not None and signature == _CACHE_KEY and _CACHED_PATTERNS:
+        return _CACHED_PATTERNS
 
     patterns: list[tuple[re.Pattern[str], str]] = []
 
@@ -176,7 +231,6 @@ def get_redaction_patterns() -> list[tuple[re.Pattern[str], str]]:
     # 2. Load project config custom redaction patterns
     try:
         import tomllib
-        from pathlib import Path
 
         from loghop.store import find_project_root
 
@@ -193,16 +247,27 @@ def get_redaction_patterns() -> list[tuple[re.Pattern[str], str]]:
                         for item in redactions
                         if isinstance(item, dict) and "pattern" in item and "replacement" in item
                     )
-    except Exception:  # noqa: BLE001
+    except BaseException:  # noqa: BLE001
+        # ``find_project_root`` shells out to ``git rev-parse``. If a test
+        # mocks ``subprocess.run`` to raise ``KeyboardInterrupt`` (e.g. to
+        # simulate a Ctrl-C during the provider run), the redaction lookup
+        # must be skipped, not propagate the interrupt up to the caller.
         pass
 
-    _custom_patterns = patterns
-    return _custom_patterns
+    _CACHE_KEY = signature
+    _CACHED_PATTERNS = patterns
+    return _CACHED_PATTERNS
 
 
 def _clear_redact_cache() -> None:
-    global _custom_patterns
-    _custom_patterns = None
+    """Invalidate the custom redaction pattern cache.
+
+    Public helper so tests and ``loghop doctor --fix`` can force a re-read of
+    config files without restarting the process.
+    """
+    global _CACHE_KEY, _CACHED_PATTERNS
+    _CACHE_KEY = None
+    _CACHED_PATTERNS = []
 
 
 def redact_text(text: str | None) -> str:

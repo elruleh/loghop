@@ -3,7 +3,6 @@ import os
 import shutil
 import subprocess  # nosec B404
 import time
-from functools import lru_cache
 from pathlib import Path
 
 from loghop import env
@@ -17,7 +16,15 @@ from loghop.redact import redact_text
 
 _CLAUDE_AUTH_TIMEOUT_SECONDS = 5
 _CLAUDE_SHELL_ENV_TIMEOUT_SECONDS = 3
+_CLAUDE_SHELL_ENV_CACHE_TTL_SECONDS = 30
 _CLAUDE_AUTH_FAILURE_NEEDLES = AUTH_FAILURE_NEEDLES
+
+# Cache for the interactive shell env probe. The shell env may change between
+# invocations (e.g. user runs ``export ANTHROPIC_API_KEY=...`` in another
+# terminal then calls loghop again), so we keep a TTL-bounded cache rather
+# than a process-lifetime one. ``invalidate_shell_env_cache()`` can still force
+# a re-probe on demand.
+_SHELL_ENV_CACHE: dict[str, tuple[float, dict[str, str]]] = {}
 
 _API_CREDENTIAL_ENV_VARS = (
     "ANTHROPIC_API_KEY",
@@ -212,15 +219,33 @@ def _current_claude_environment() -> dict[str, str]:
 
 def invalidate_shell_env_cache() -> None:
     """Clear the cached interactive shell environment probe."""
-    from loghop import providers
-
-    providers._interactive_shell_claude_environment.cache_clear()
+    _SHELL_ENV_CACHE.clear()
 
 
-@lru_cache(maxsize=1)
 def _interactive_shell_claude_environment() -> dict[str, str]:
+    """Probe the interactive shell for Claude-related env vars.
+
+    The probe is gated by ``LOGHOP_DISABLE_CLAUDE_SHELL_ENV_PROBE`` and the
+    result is cached for ``_CLAUDE_SHELL_ENV_CACHE_TTL_SECONDS`` so that short
+    bursts of loghop invocations don't keep spawning ``bash``.
+    """
+    cache_key = "claude"
+    now = time.monotonic()
+    cached = _SHELL_ENV_CACHE.get(cache_key)
+    if cached is not None:
+        cached_at, cached_value = cached
+        if now - cached_at < _CLAUDE_SHELL_ENV_CACHE_TTL_SECONDS:
+            return cached_value
+
     if not env.claude_shell_env_probe_enabled():
-        return {}
+        result: dict[str, str] = {}
+    else:
+        result = _probe_shell_claude_environment()
+    _SHELL_ENV_CACHE[cache_key] = (now, result)
+    return result
+
+
+def _probe_shell_claude_environment() -> dict[str, str]:
     try:
         completed = subprocess.run(  # nosec B603, B607
             ["bash", "-c", "env -0"],
