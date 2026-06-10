@@ -16,13 +16,12 @@ run_qa() {
   uv run --all-extras mypy src
   uv run --all-extras bandit -c .bandit.yml -r src/loghop
   uv export --all-extras --dev --format requirements-txt --no-emit-project --no-hashes > "$audit_requirements"
-  # Pin ``pip`` above the PYSEC-2026-196 vulnerability window before auditing.
-  # ``pip`` is provided by the GitHub Actions runner image (not the project
-  # lockfile) and older images still ship pip 26.1; ``pip-audit`` then flags
-  # the runner's own interpreter, which is unrelated to loghop's deps. This
-  # upgrade is a no-op once runners ship pip >= 26.1.2.
-  uv pip install --upgrade "pip>=26.1.2"
-  uv run --all-extras pip-audit -r "$audit_requirements" --desc
+  # PYSEC-2026-196: pip <= 26.1.1 path-traversal in entry-point install.
+  # ``pip`` is part of the GitHub Actions runner image, not a loghop
+  # dependency.  ``uv run`` sandboxes pip-audit in its own venv, so
+  # upgrading pip via ``uv pip install`` touches a different
+  # environment.  Ignore the vuln until runner images ship pip >= 26.1.2.
+  uv run --all-extras pip-audit -r "$audit_requirements" --desc --ignore-vuln PYSEC-2026-196
   uv run --all-extras pytest --cov=loghop --cov-report=term-missing --cov-fail-under=80
   # Slow TUI tests run on every release, but the developer inner loop can
   # skip them with ``pytest -m "not slow"``.
