@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-10
+
 ### Added
 - TUI tests for screen-state helpers, list-screen search parser, and the new declarative terminal specs (`tests/test_tui_screen_state.py`, `tests/test_launcher_specs.py`).
 - `pytest.mark.slow` marker for TUI tests that need a real pilot; `pytest -m "not slow"` skips them in the inner loop.
@@ -111,7 +113,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core commands: `init`, `note`, `task`, `status`, `handoff`, `import`,
   `export`.
 
-[Unreleased]: https://github.com/elruleh/loghop/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/elruleh/loghop/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/elruleh/loghop/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/elruleh/loghop/releases/tag/v0.1.1
 [0.1.0]: https://github.com/elruleh/loghop/releases/tag/v0.1.0
 [Pre-0.1 rewrite]: https://github.com/elruleh/loghop/commits/main
