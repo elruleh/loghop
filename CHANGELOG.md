@@ -114,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `export`.
 
 [Unreleased]: https://github.com/elruleh/loghop/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/elruleh/loghop/compare/v0.1.1...v0.2.0
+[0.2.0]: https://github.com/elruleh/loghop/releases/tag/v0.2.0
 [0.1.1]: https://github.com/elruleh/loghop/releases/tag/v0.1.1
 [0.1.0]: https://github.com/elruleh/loghop/releases/tag/v0.1.0
 [Pre-0.1 rewrite]: https://github.com/elruleh/loghop/commits/main
