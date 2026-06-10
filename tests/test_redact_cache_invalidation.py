@@ -25,9 +25,7 @@ def _isolate_home(tmp_path: Path, monkeypatch) -> None:
         Path,
         "home",
         classmethod(
-            lambda cls: Path(
-                os.environ.get("HOME") or os.environ.get("USERPROFILE") or fake_home
-            )
+            lambda cls: Path(os.environ.get("HOME") or os.environ.get("USERPROFILE") or fake_home)
         ),
     )
     redact._clear_redact_cache()
@@ -89,9 +87,7 @@ def test_cache_invalidates_on_mtime_change(tmp_path, monkeypatch) -> None:
     assert "[v2]" in redact.redact_text("abc-123")
 
 
-def test_invalid_pattern_in_config_does_not_crash(
-    tmp_path, monkeypatch
-) -> None:
+def test_invalid_pattern_in_config_does_not_crash(tmp_path, monkeypatch) -> None:
     """A bad regex in custom redaction should not break redaction for other text."""
     _isolate_home(tmp_path, monkeypatch)
     monkeypatch.chdir(tmp_path)

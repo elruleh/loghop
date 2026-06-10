@@ -33,7 +33,9 @@ def test_terminal_specs(name: str, expected_prefix: list[str]) -> None:
     spec = _TERMINAL_SPECS[name]
     args = spec.build("cmd", "/w", "t")
     # Verify the static prefix and the bash invocation at the tail.
-    for prefix_part, expected_part in zip(args[: len(expected_prefix)], expected_prefix, strict=True):
+    for prefix_part, expected_part in zip(
+        args[: len(expected_prefix)], expected_prefix, strict=True
+    ):
         assert prefix_part == expected_part, f"{name}: {args}"
     # bash -ic <payload> closes every spec; payload contains the user command.
     assert args[-3] == "bash"
