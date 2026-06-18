@@ -15,8 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Greet first-time contributors
-        uses: vsoch/welcome-bot@main
+        uses: actions/first-interaction@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ github.token }}
+          issue_message: |
+            👋 Thanks for opening your first issue in loghop! A maintainer will take a look. If it's a question rather than a bug, consider asking in Discussions for faster community help.
+          pr_message: |
+            👋 Thanks for opening your first PR in loghop! A maintainer will review it shortly. While you wait, feel free to join the discussion or browse other open issues.

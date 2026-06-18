@@ -15,28 +15,5 @@ jobs:
     steps:
       - name: Update release draft
         uses: release-drafter/release-drafter@v6
-        with:
-          config-name: loghop-release.yml
-          tag: ""
-          version-resolver:
-            major:
-              labels: "breaking,major"
-            minor:
-              labels: "feature,enhancement,minor"
-            patch:
-              labels: "bug,fix,chore,docs,dependencies"
-            default: patch
-          include-pre-releases: false
-          exclude-labels: "skip-changelog"
-          change-template: "- $TITLE (#$NUMBER) @$AUTHOR"
-          template: |
-            # Changes
-
-            $CHANGES
-
-            **Full Changelog**: https://github.com/elruleh/loghop/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
-          name-template: "v$RESOLVED_VERSION"
-          tag-template: "v$RESOLVED_VERSION"
-          version: "0.3.0"
-          publish: false
-          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
