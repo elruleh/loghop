@@ -234,7 +234,13 @@ loghop tui                   # launch the TUI
 ```
 
 <p align="center">
-  <img src="docs/img/loghop-tui.svg" alt="loghop TUI with Harbor dark theme" width="100%">
+  <a href="https://elruleh.github.io/loghop/tui.html">
+    <img src="docs/img/loghop-tui.svg" alt="loghop TUI with Harbor dark theme" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://elruleh.github.io/loghop/tui.html">▶ Watch TUI demo</a>
 </p>
 
 - **Home screen** — global project list and status
