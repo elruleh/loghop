@@ -46,13 +46,13 @@
 **loghop** lets you switch between AI coding assistants (Claude Code, Codex) without losing context. It captures every session, builds a shared timeline, and generates handoff documents so the next agent—even a different one—can pick up exactly where you left off.
 
 <p align="center">
-  <a href="docs/img/demo/loghop-quickstart.mp4">
+  <a href="https://elruleh.github.io/loghop/demo.html">
     <img src="docs/img/demo/loghop-quickstart.gif" alt="loghop quickstart demo" width="800">
   </a>
 </p>
 
 <p align="center">
-  <a href="docs/img/demo/loghop-quickstart.mp4">▶ Watch MP4 version</a>
+  <a href="https://elruleh.github.io/loghop/demo.html">▶ Watch video demo</a> · <a href="docs/img/demo/loghop-quickstart.mp4">MP4 asset</a>
 </p>
 
 <p align="center">
