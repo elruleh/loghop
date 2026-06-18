@@ -1,4 +1,4 @@
-# loghop TUI demo - stable version
+# loghop TUI demo - sessions-focused
 # Output: loghop-tui-demo.mp4
 
 Output loghop-tui-demo.mp4
@@ -9,7 +9,7 @@ Set Width 1280
 Set Height 720
 Set Padding 24
 Set Theme "Dracula"
-Set TypingSpeed 16ms
+Set TypingSpeed 14ms
 Set Framerate 30
 Set WindowBar "Rings"
 Set WindowBarSize 36
@@ -22,21 +22,23 @@ Enter
 Type "clear"
 Enter
 Show
-Sleep 400ms
+Sleep 350ms
 
-# Launch directly into the project screen (stable, no search step)
-Type "loghop tui"
+# Home view first, then open the highlighted project (loghop-demo-recording)
+Type "loghop tui --global"
 Enter
-Sleep 3200ms
+Sleep 2600ms
+Enter
+Sleep 5200ms
 
-# Show the built-in help overlay
-Type "?"
-Sleep 1400ms
-Escape
-Sleep 600ms
+# Move through the sessions so the table and preview pane are clearly visible
+Type "j"
+Sleep 1200ms
+Type "j"
+Sleep 1200ms
+Type "k"
+Sleep 1200ms
 
-# Back to home, then quit
-Type "b"
-Sleep 1100ms
+# Quit cleanly
 Type "q"
-Sleep 900ms
+Sleep 800ms
