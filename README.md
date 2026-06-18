@@ -49,6 +49,12 @@
   <img src="docs/img/demo/loghop-quickstart.gif" alt="loghop quickstart demo" width="800">
 </p>
 
+<p align="center">
+  <a href="https://star-history.com/#elruleh/loghop&Date">
+    <img src="https://api.star-history.com/svg?repos=elruleh/loghop&type=Date" alt="Star History Chart" width="500">
+  </a>
+</p>
+
 ## Why loghop?
 
 - **You lose context every time you switch assistants.** Claude Code runs out of thinking budget. Codex gives better answers for your stack. But starting over means re-explaining decisions, copy-pasting summaries, or losing the thread entirely.
@@ -305,6 +311,16 @@ bash scripts/release_check.sh qa
 MIT — see [LICENSE](LICENSE).
 
 Loghop is not affiliated with, endorsed by, or connected to Anthropic or OpenAI.
+
+## Used by
+
+Projects and teams using loghop in production or for personal workflows:
+
+<!-- Add your project here via a PR to README.md -->
+<!-- Format: [name](url) — short description -->
+- _Add your project here_
+
+Want to be listed? Open a PR adding your project, or share it in [Show and tell](https://github.com/elruleh/loghop/discussions/categories/show-and-tell).
 
 ---
 
