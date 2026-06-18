@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use loghop in your research, please cite it as below."
+type: software
+title: "loghop"
+abstract: "Stop losing context when switching AI coding assistants. loghop captures sessions from Claude Code and Codex, builds a shared project timeline, and writes handoff documents so the next agent — even a different one — picks up where the last one left off."
+authors:
+  - family-names: "Alonso"
+    given-names: "Raul"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: 0.2.0
+date-released: 2026-06-10
+license: MIT
+repository-code: "https://github.com/elruleh/loghop"
+url: "https://elruleh.github.io/loghop/"
+keywords:
+  - ai
+  - claude
+  - codex
+  - cli
+  - handoff
+  - developer-tools
+  - python
+  - terminal
+  - tui
+  - session-management
+  - context-management
+preferred-citation:
+  type: article
+  title: "loghop: Cross-session handoff for AI coding assistants"
+  authors:
+    - family-names: "Alonso"
+      given-names: "Raul"
+  journal: "GitHub"
+  year: 2026
+  month: 6
+  url: "https://github.com/elruleh/loghop"
