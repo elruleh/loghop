@@ -1,0 +1,33 @@
+# Release drafter config for loghop
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+version-template: '$MAJOR.$MINOR.$PATCH'
+categories:
+  - title: '🚨 Breaking Changes'
+    labels:
+      - 'breaking'
+      - 'breaking-change'
+  - title: '🚀 New Features'
+    labels:
+      - 'feature'
+      - 'enhancement'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+  - title: '📚 Documentation'
+    labels:
+      - 'docs'
+      - 'documentation'
+  - title: '🧹 Maintenance'
+    labels:
+      - 'chore'
+      - 'dependencies'
+      - 'refactor'
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+template: |
+  # Changes
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/elruleh/loghop/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
