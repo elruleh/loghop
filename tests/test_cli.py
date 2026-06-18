@@ -800,7 +800,7 @@ def test_json_without_command_returns_machine_error(cli: CliRunner) -> None:
 def test_version_flag_prints_package_version(cli: CliRunner) -> None:
     code, stdout, _ = cli(["--version"])
     assert code == 0
-    assert "0.1.1" in stdout
+    assert "0.2.0" in stdout
 
 
 def test_wrap_passthrough_keeps_provider_flags() -> None:
