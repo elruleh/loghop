@@ -1,4 +1,4 @@
-# loghop TUI demo
+# loghop TUI demo - stable version
 # Output: loghop-tui-demo.mp4
 
 Output loghop-tui-demo.mp4
@@ -9,7 +9,7 @@ Set Width 1280
 Set Height 720
 Set Padding 24
 Set Theme "Dracula"
-Set TypingSpeed 18ms
+Set TypingSpeed 16ms
 Set Framerate 30
 Set WindowBar "Rings"
 Set WindowBarSize 36
@@ -22,28 +22,21 @@ Enter
 Type "clear"
 Enter
 Show
-Sleep 500ms
+Sleep 400ms
 
-Type "loghop tui --global"
+# Launch directly into the project screen (stable, no search step)
+Type "loghop tui"
 Enter
-Sleep 2500ms
+Sleep 3200ms
 
-# Search for the demo project and open it
-Type "/"
-Type "loghop-demo-recording"
-Enter
-Sleep 1200ms
-Enter
-Sleep 2200ms
-
-# Show help overlay, then close it
+# Show the built-in help overlay
 Type "?"
-Sleep 1500ms
+Sleep 1400ms
 Escape
-Sleep 800ms
+Sleep 600ms
 
-# Go back to the home list and quit
+# Back to home, then quit
 Type "b"
-Sleep 1000ms
+Sleep 1100ms
 Type "q"
-Sleep 1000ms
+Sleep 900ms
