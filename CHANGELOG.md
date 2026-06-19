@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Release hygiene:** the previously drafted `v0.2.1` release was a documentation-only release with no user-facing code changes since v0.2.0. To avoid publishing an identical wheel to PyPI, the draft was closed. `v0.2.0` remains the latest published release. A future `0.2.x` will be cut only when a real code change warrants a new version.
+- Docs site: added an editorial *vs other tools* comparison page (`docs/explanation/comparison.md`) covering Aider, Cursor, Cline, Roo Code, Continue, Claude Code sessions, Copilot, Gemini CLI and manual copy-paste, linked from the sidebar.
+- Docs site: social preview image refreshed (PNG + SVG) with a clearer pain hook and a GitHub stars CTA; contrast re-verified AAA.
+- Docs site: a GitHub stars badge added to the landing hero for social proof.
+- Repository topics expanded from 10 to 15 (added `agent-context`, `ai-agents`, `claude-code`, `context-management`, `developer-experience`).
+- Local `marketing/` directory added to `.gitignore` so only project-grade content ships in the repo.
+
 ## [0.2.0] - 2026-06-10
 
 ### Added
@@ -114,6 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `export`.
 
 [Unreleased]: https://github.com/elruleh/loghop/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/elruleh/loghop/compare/v0.1.1...v0.2.0
 [0.2.0]: https://github.com/elruleh/loghop/releases/tag/v0.2.0
 [0.1.1]: https://github.com/elruleh/loghop/releases/tag/v0.1.1
 [0.1.0]: https://github.com/elruleh/loghop/releases/tag/v0.1.0
