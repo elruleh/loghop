@@ -1,44 +1,62 @@
-# loghop dashboard demo - terminal dashboard view
-# Output: loghop-dashboard-demo.mp4
-# Strategy: the Textual TUI uses the alt-screen which `vhs` cannot
-# capture reliably into a single PNG/MP4 frame stream. Instead we
-# showcase the textual `loghop` dashboard (the same data, rendered in
-# the same dark editorial palette, formatted by Rich). The TUI proper
-# is demonstrated in the README link to `docs/tui.html`.
+# loghop TUI demo - real Textual interface with seeded projects
+# Output: loghop-tui-demo.mp4
+# Strategy: launch the real `loghop tui` (Textual, alt-screen) against a
+# seeded workspace of six projects. VHS captures the alt-screen directly.
+# Navigation: home -> arrow down -> enter a project -> browse sessions ->
+# escape back -> quit. Runs against the editable venv build (the public
+# 0.2.0 wheel has a project-list regression fixed in the unreleased src).
 
-Output loghop-dashboard-demo.mp4
+Output loghop-tui-demo.mp4
 
 Set Shell bash
-Set FontSize 18
+Set FontSize 16
 Set Width 1280
 Set Height 720
-Set Padding 25
+Set Padding 20
 Set Theme "Dracula"
 Set TypingSpeed 10ms
 Set Framerate 30
 Set WindowBar "Rings"
 Set WindowBarSize 36
 
-# Setup env (hidden, fast)
+# Setup env (hidden, fast): editable loghop on PATH, seeded workspace
 Hide
-Type "export PATH=$HOME/.local/bin:$PATH"
+Type "export PATH=/home/raul/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
 Enter
-Type "cd /tmp/loghop-demo-recording"
+Type "cd /tmp"
 Enter
 Type "clear"
 Enter
 Show
-Sleep 400ms
+Sleep 300ms
 
-# Compact dashboard — the default first impression
-Type "loghop"
+# Launch the TUI — home shows six real projects
+Type "loghop tui"
 Enter
-Sleep 2.6s
-Type "clear"
-Enter
-Sleep 200ms
+Sleep 3.2s
 
-# Re-run with --plain for a no-color capture-stable view
-Type "loghop --plain"
+# Move selection down to highlight a different project
+Down
+Sleep 700ms
+Down
+Sleep 700ms
+Down
+Sleep 700ms
+
+# Enter the selected project to see its session timeline
 Enter
-Sleep 2.6s
+Sleep 3.2s
+
+# Browse the sessions
+Down
+Sleep 600ms
+Down
+Sleep 600ms
+
+# Return to the project list
+Escape
+Sleep 1.2s
+
+# Quit the TUI
+Type "q"
+Sleep 500ms

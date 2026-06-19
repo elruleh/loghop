@@ -1,50 +1,59 @@
-# loghop demo - short MP4 hero (~18s target)
+# loghop quickstart demo - short MP4 hero (~16s target)
 # Output: loghop-quickstart.mp4
-# Strategy: run real loghop commands in a pre-populated demo project,
-# so the screen shows real output, not echoed strings. `loghop sessions
-# list` is omitted because of a Rich markup leak in 0.2.0 (tracked).
+# Strategy: real loghop commands against a seeded multi-project workspace.
+# Each command produces visible Rich output (status, sessions, handoffs)
+# with enough dwell time so the rendered output is legible in the video.
 
 Output loghop-quickstart.mp4
 
 Set Shell bash
-Set FontSize 18
+Set FontSize 17
 Set Width 1280
 Set Height 720
-Set Padding 25
+Set Padding 24
 Set Theme "Dracula"
-Set TypingSpeed 10ms
+Set TypingSpeed 11ms
 Set Framerate 30
 Set WindowBar "Rings"
 Set WindowBarSize 36
 
-# Setup env (hidden, fast)
+# Setup env (hidden, fast): put the editable loghop on PATH and jump
+# into the seeded audit project so every command has real data.
 Hide
-Type "export PATH=$HOME/.local/bin:$PATH"
+Type "export PATH=/home/raul/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
 Enter
-Type "cd /tmp/loghop-demo-recording"
+Type "cd /tmp/loghop-demo-projects/audit"
 Enter
 Type "clear"
 Enter
 Show
 Sleep 300ms
 
-# Show the shared project context
+# 1) Global dashboard — six real projects with sessions and handoffs
+Type "loghop projects"
+Enter
+Sleep 3.4s
+Type "clear"
+Enter
+Sleep 250ms
+
+# 2) Project status — goal, providers, memory, handoff pointer
 Type "loghop status"
 Enter
-Sleep 2.6s
+Sleep 3.2s
 Type "clear"
 Enter
-Sleep 200ms
+Sleep 250ms
 
-# Show the handoff list — the core idea: history travels between runs
+# 3) Sessions timeline — the product payoff: history travels between runs
+Type "loghop sessions list"
+Enter
+Sleep 3.8s
+Type "clear"
+Enter
+Sleep 250ms
+
+# 4) Handoff list — built handoffs ready to resume on another provider
 Type "loghop handoff list"
 Enter
-Sleep 2.8s
-Type "clear"
-Enter
-Sleep 200ms
-
-# Closing CTA: real install command (uv is available in our recording env)
-Type "uv tool install loghop"
-Enter
-Sleep 2.6s
+Sleep 3.2s
