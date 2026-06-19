@@ -19,7 +19,7 @@ Set WindowBarSize 34
 
 # Setup env (hidden, fast)
 Hide
-Type "export PATH=/home/raul/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
+Type "export PATH=/home/user/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
 Enter
 Type "cd /tmp/loghop-demo-projects/audit"
 Enter

@@ -79,7 +79,16 @@ def test_contributing_links_to_issue_chooser_not_deleted_markdown_templates() ->
 
 def test_mailmap_normalizes_maintainer_identity() -> None:
     body = _repo_path(".mailmap").read_text(encoding="utf-8")
-    assert "elruleh <elruleh@users.noreply.github.com> <raul90@gmail.com>" in body
+    # Old personal email must collapse to the canonical identity.
+    assert "Ruleh <ruleh@proton.me>" in body
+    assert "<raul90@gmail.com>" in body
+    # The raw personal email must not appear in a non-mapped form.
+    raw = body.count("raul90@gmail.com")
+    mapped = body.count("<raul90@gmail.com>")
+    assert raw == mapped, (
+        f"raul90@gmail.com appears {raw}x but only {mapped}x inside <>; "
+        "expected it only inside a mailmap alias line"
+    )
 
 
 def test_citation_cff_has_no_placeholder_orcid() -> None:

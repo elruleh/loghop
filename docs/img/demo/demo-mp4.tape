@@ -20,7 +20,7 @@ Set WindowBarSize 36
 # Setup env (hidden, fast): put the editable loghop on PATH and jump
 # into the seeded audit project so every command has real data.
 Hide
-Type "export PATH=/home/raul/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
+Type "export PATH=/home/user/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
 Enter
 Type "cd /tmp/loghop-demo-projects/audit"
 Enter

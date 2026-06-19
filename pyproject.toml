@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 authors = [
-    { name = "elruleh", email = "elruleh@users.noreply.github.com" },
+    { name = "Ruleh", email = "ruleh@proton.me" },
 ]
 keywords = ["cli", "git", "handoff", "codex", "claude"]
 urls = { Homepage = "https://github.com/elruleh/loghop", Repository = "https://github.com/elruleh/loghop", Issues = "https://github.com/elruleh/loghop/issues", Changelog = "https://github.com/elruleh/loghop/blob/main/CHANGELOG.md" }

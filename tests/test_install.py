@@ -21,14 +21,14 @@ def _write(path: Path, content: str) -> None:
 
 class TestPromptInstall:
     def test_creates_prompt_file_and_includes_in_agents(self) -> None:
-        _write(Path.home() / ".codex" / "AGENTS.md", "@/home/raul/.codex/RTK.md\n")
+        _write(Path.home() / ".codex" / "AGENTS.md", "@/home/user/.codex/RTK.md\n")
         reports = install_loghop_prompt(targets=("codex",))
         actions = {r.path.name: r.action for r in reports}
         assert actions["loghop-prompt.md"] in {"created", "updated"}
         assert actions["AGENTS.md"] == "updated"
 
         agents_body = (Path.home() / ".codex" / "AGENTS.md").read_text()
-        assert "@/home/raul/.codex/RTK.md" in agents_body  # RTK preserved
+        assert "@/home/user/.codex/RTK.md" in agents_body  # RTK preserved
         assert str(Path.home() / ".loghop" / "loghop-prompt.md") in agents_body
 
     def test_idempotent(self) -> None:

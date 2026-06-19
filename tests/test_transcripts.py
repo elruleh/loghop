@@ -159,7 +159,7 @@ def test_codex_reader_parses_agent_message_payload_without_duplicate_message(
 
 
 def test_claude_slug_matches_path() -> None:
-    assert _slug_for_cwd(Path("/home/raul/projects/loghop")) == "-home-raul-projects-loghop"
+    assert _slug_for_cwd(Path("/home/user/projects/loghop")) == "-home-user-projects-loghop"
 
 
 def test_claude_reader_finds_and_parses(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
