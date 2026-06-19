@@ -1,5 +1,8 @@
 # loghop demo - short MP4 hero (~18s target)
 # Output: loghop-quickstart.mp4
+# Strategy: run real loghop commands in a pre-populated demo project,
+# so the screen shows real output, not echoed strings. `loghop sessions
+# list` is omitted because of a Rich markup leak in 0.2.0 (tracked).
 
 Output loghop-quickstart.mp4
 
@@ -23,31 +26,25 @@ Enter
 Type "clear"
 Enter
 Show
+Sleep 300ms
+
+# Show the shared project context
+Type "loghop status"
+Enter
+Sleep 2.6s
+Type "clear"
+Enter
 Sleep 200ms
 
-# Title
-Type "echo 'loghop — keep context when switching assistants'"
+# Show the handoff list — the core idea: history travels between runs
+Type "loghop handoff list"
 Enter
-Sleep 1400ms
+Sleep 2.8s
 Type "clear"
 Enter
-Sleep 150ms
+Sleep 200ms
 
-# Goal + status
-Type "echo '1) set the project goal once'; loghop goal"
+# Closing CTA: real install command (uv is available in our recording env)
+Type "uv tool install loghop"
 Enter
-Sleep 1400ms
-Type "echo '2) timeline + sessions stay in sync'; loghop status"
-Enter
-Sleep 1400ms
-
-# Handoff + CTA
-Type "echo '3) handoff cleanly to the next run'; loghop handoff list"
-Enter
-Sleep 1300ms
-Type "clear"
-Enter
-Sleep 150ms
-Type "echo 'pipx install loghop  →  github.com/elruleh/loghop'"
-Enter
-Sleep 2200ms
+Sleep 2.6s

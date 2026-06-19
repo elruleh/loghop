@@ -1,53 +1,51 @@
-# loghop demo
-Output demo.gif
+# loghop demo - GIF source (~38s target)
+# Output: loghop-quickstart.gif
+# Strategy: full narrative arc — status, handoffs, install CTA. Every
+# command is real; no `echo` strings printed in place of commands.
+# `loghop sessions list` omitted: a Rich Tree label markup leak in 0.2.0
+# prints literal `[bold]…[/]` tags when stdout is non-interactive.
+
+Output loghop-quickstart.gif
 
 Set Shell bash
-Set FontSize 14
+Set FontSize 16
 Set Width 1200
 Set Height 700
-Set Padding 20
+Set Padding 22
 Set Theme "Dracula"
-Set TypingSpeed 50ms
+Set TypingSpeed 12ms
 Set Framerate 30
+Set WindowBar "Rings"
+Set WindowBarSize 36
 
-# Set up env (silent)
+# Setup env (hidden, fast)
+Hide
 Type "export PATH=$HOME/.local/bin:$PATH"
 Enter
 Type "cd /tmp/loghop-demo-recording"
 Enter
 Type "clear"
 Enter
-Sleep 1s
+Show
+Sleep 400ms
 
-# Step 1: Show goal
-Type "loghop goal"
-Enter
-Sleep 3s
-
-# Step 2: Status
+# 1) Status — establishes the shared context
 Type "loghop status"
 Enter
-Sleep 4s
-
-# Step 3: Sessions list
-Type "loghop sessions list"
+Sleep 3.2s
+Type "clear"
 Enter
-Sleep 5s
+Sleep 200ms
 
-# Step 4: List handoffs
+# 2) Handoff list — the product payoff
 Type "loghop handoff list"
 Enter
-Sleep 5s
+Sleep 3.4s
+Type "clear"
+Enter
+Sleep 200ms
 
-# Step 5: Show latest handoff
-Type "loghop handoff show H-002"
+# 3) Install CTA (uv)
+Type "uv tool install loghop"
 Enter
-Sleep 5s
-
-# Closing
-Type "echo 'pipx install loghop'"
-Enter
-Sleep 1s
-Type "echo 'github.com/elruleh/loghop'"
-Enter
-Sleep 3s
+Sleep 2.2s

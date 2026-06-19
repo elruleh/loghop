@@ -1,19 +1,25 @@
-# loghop TUI demo - sessions-focused
-# Output: loghop-tui-demo.mp4
+# loghop dashboard demo - terminal dashboard view
+# Output: loghop-dashboard-demo.mp4
+# Strategy: the Textual TUI uses the alt-screen which `vhs` cannot
+# capture reliably into a single PNG/MP4 frame stream. Instead we
+# showcase the textual `loghop` dashboard (the same data, rendered in
+# the same dark editorial palette, formatted by Rich). The TUI proper
+# is demonstrated in the README link to `docs/tui.html`.
 
-Output loghop-tui-demo.mp4
+Output loghop-dashboard-demo.mp4
 
 Set Shell bash
-Set FontSize 16
+Set FontSize 18
 Set Width 1280
 Set Height 720
-Set Padding 24
+Set Padding 25
 Set Theme "Dracula"
-Set TypingSpeed 14ms
+Set TypingSpeed 10ms
 Set Framerate 30
 Set WindowBar "Rings"
 Set WindowBarSize 36
 
+# Setup env (hidden, fast)
 Hide
 Type "export PATH=$HOME/.local/bin:$PATH"
 Enter
@@ -22,23 +28,17 @@ Enter
 Type "clear"
 Enter
 Show
-Sleep 350ms
+Sleep 400ms
 
-# Home view first, then open the highlighted project (loghop-demo-recording)
-Type "loghop tui --global"
+# Compact dashboard — the default first impression
+Type "loghop"
 Enter
-Sleep 2600ms
+Sleep 2.6s
+Type "clear"
 Enter
-Sleep 5200ms
+Sleep 200ms
 
-# Move through the sessions so the table and preview pane are clearly visible
-Type "j"
-Sleep 1200ms
-Type "j"
-Sleep 1200ms
-Type "k"
-Sleep 1200ms
-
-# Quit cleanly
-Type "q"
-Sleep 800ms
+# Re-run with --plain for a no-color capture-stable view
+Type "loghop --plain"
+Enter
+Sleep 2.6s
