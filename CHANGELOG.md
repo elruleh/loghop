@@ -7,14 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-06-19
+
+### Fixed
+- TUI project loading now works correctly from packaged installs, restoring the home-screen project list for users installing via PyPI/`uv tool install`.
+- `loghop sessions list` no longer leaks Rich markup in tree labels when rendered outside an interactive terminal.
+- `sessions reconcile` is more stable around near-future timestamps and clock skew.
+- Claude shell-environment probing handles both `bytes` and `str` subprocess output.
+- Low-severity Bandit findings in subprocess and broad-exception paths have been addressed.
+
 ### Changed
-- **Release hygiene:** the previously drafted `v0.2.1` release was a documentation-only release with no user-facing code changes since v0.2.0. To avoid publishing an identical wheel to PyPI, the draft was closed. `v0.2.0` remains the latest published release. A future `0.2.x` will be cut only when a real code change warrants a new version.
-- Docs site: added an editorial *vs other tools* comparison page (`docs/explanation/comparison.md`) covering Aider, Cursor, Cline, Roo Code, Continue, Claude Code sessions, Copilot, Gemini CLI and manual copy-paste, linked from the sidebar.
-- Docs site: social preview image refreshed (PNG + SVG) with a clearer pain hook and a GitHub stars CTA; contrast re-verified AAA.
-- Docs site: a GitHub stars badge added to the landing hero for social proof.
-- Repository topics expanded from 10 to 15 (added `agent-context`, `ai-agents`, `claude-code`, `context-management`, `developer-experience`).
-- Local `marketing/` directory added to `.gitignore` so only project-grade content ships in the repo.
-- **Demo assets regenerated.** The previous `demo.tape` (GIF source) and `demo-mp4.tape` ran placeholder commands of the form `echo 'loghop ...'` printed in place of the real `loghop` command, which made the recordings look like a fake demo. The tapes have been rewritten to run real commands (`loghop status`, `loghop handoff list`, `uv tool install loghop`) against a pre-populated demo project. The TUI demo has been replaced with a dashboard demo (`loghop-dashboard-demo.mp4`) because the Textual TUI cannot be reliably captured to a single MP4 frame stream; the static TUI preview (`docs/img/loghop-tui.svg`) remains available on `/tui.html`.
+- Demo assets now show real command output and an actual Textual TUI recording over a populated multi-project workspace.
+- Public repository hygiene was tightened: maintainer identity, CODEOWNERS, release-hygiene tests, issue links, metadata, support policy and contribution policy.
+- Documentation now includes a comparison page for adjacent AI coding tools and refreshed social/demo assets.
+
 ## [0.2.0] - 2026-06-10
 
 ### Added
@@ -121,9 +127,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core commands: `init`, `note`, `task`, `status`, `handoff`, `import`,
   `export`.
 
-[Unreleased]: https://github.com/elruleh/loghop/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/elruleh/loghop/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/elruleh/loghop/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/elruleh/loghop/compare/v0.1.1...v0.2.0
-[0.2.0]: https://github.com/elruleh/loghop/releases/tag/v0.2.0
 [0.1.1]: https://github.com/elruleh/loghop/releases/tag/v0.1.1
 [0.1.0]: https://github.com/elruleh/loghop/releases/tag/v0.1.0
 [Pre-0.1 rewrite]: https://github.com/elruleh/loghop/commits/main
