@@ -175,7 +175,7 @@ def _source_paths() -> list[Path]:
         if root is not None:
             paths.append(root / ".loghop" / "config.toml")
     except BaseException:  # noqa: BLE001
-        root = None
+        pass
     return paths
 
 

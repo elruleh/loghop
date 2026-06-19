@@ -462,7 +462,6 @@ class ProjectScreen(ListScreen):
         table = self._table
 
         self._spinner_idx = (self._spinner_idx + 1) % len(glyph.SPINNER_FRAMES)
-        frame = glyph.SPINNER_FRAMES[self._spinner_idx]
 
         if self._loading_spinner:
             self._update_chrome(
