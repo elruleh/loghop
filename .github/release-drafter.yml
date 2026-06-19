@@ -24,6 +24,9 @@ categories:
       - 'chore'
       - 'dependencies'
       - 'refactor'
+exclude-labels:
+  - 'skip-changelog'
+  - 'no-release'
 change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 template: |
   # Changes
