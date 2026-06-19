@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docs site: a GitHub stars badge added to the landing hero for social proof.
 - Repository topics expanded from 10 to 15 (added `agent-context`, `ai-agents`, `claude-code`, `context-management`, `developer-experience`).
 - Local `marketing/` directory added to `.gitignore` so only project-grade content ships in the repo.
-- **Demo assets regenerated.** The previous `demo.tape` (GIF source) and `demo-mp4.tape` ran placeholder commands of the form `echo 'loghop ...'` printed in place of the real `loghop` command, which made the recordings look like a fake demo. The tapes have been rewritten to run real commands (`loghop status`, `loghop handoff list`, `uv tool install loghop`) against a pre-populated demo project. The TUI demo has been replaced with a dashboard demo (`loghop-dashboard-demo.mp4`) because the Textual TUI cannot be reliably captured to a single MP4 frame stream; the static TUI preview (`docs/img/loghop-tui.svg`) remains available on `/tui.html`.
+
 ## [0.2.0] - 2026-06-10
 
 ### Added
