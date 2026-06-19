@@ -128,3 +128,18 @@ def test_precommit_ruff_pin_is_modern() -> None:
     assert "ruff-pre-commit" in body
     # No raw 40-char git SHAs in the ruff pin: keep the config maintainable.
     assert not re.search(r"^\s*rev:\s*[0-9a-f]{40}\s*$", body, flags=re.MULTILINE)
+
+
+def test_release_process_doc_exists_and_is_substantive() -> None:
+    body = _repo_path("docs", "how-to", "release.md").read_text(encoding="utf-8")
+    # The doc must exist and address both the audit and the discipline rules.
+    assert "Pre-release audit" in body
+    assert "Discipline rules" in body
+    assert "No standalone hygiene commits" in body
+
+
+def test_release_process_doc_is_linked_from_contributing() -> None:
+    body = _repo_path("CONTRIBUTING.md").read_text(encoding="utf-8")
+    # The release-process doc must be discoverable from the contributor guide.
+    assert "docs/how-to/release.md" in body
+    assert "Release process" in body
