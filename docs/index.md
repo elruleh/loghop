@@ -14,6 +14,7 @@ description: Switch AI coding assistants without starting over.
       <a class="button secondary" href="https://github.com/elruleh/loghop">View on GitHub</a>
     </div>
     <div class="badges" aria-label="Project status badges">
+      <a href="https://github.com/elruleh/loghop" aria-label="Star loghop on GitHub"><img src="https://img.shields.io/github/stars/elruleh/loghop?style=social" alt="GitHub stars"></a>
       <img src="https://img.shields.io/pypi/v/loghop?color=%2334D058&label=pypi%20package" alt="PyPI package version">
       <img src="https://img.shields.io/pypi/pyversions/loghop.svg?color=%2334D058" alt="Supported Python versions">
       <img src="https://github.com/elruleh/loghop/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI status">

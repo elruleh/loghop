@@ -49,6 +49,9 @@ pi-session-*.html
 
 .loghop/
 
+# Marketing drafts and launch collateral (local-only, not for public repo)
+marketing/
+
 # Local agent metadata / vendored skills
 .agents/
 .claude/
@@ -58,6 +61,7 @@ skills-lock.json
 # Internal/generated docs and media (not for public release)
 docs/superpowers/
 docs/video/
+docs/img/_audit/
 
 # Generated memory files
 loghop.md
