@@ -21,7 +21,7 @@ Set WindowBarSize 36
 
 # Setup env (hidden, fast): editable loghop on PATH, seeded workspace
 Hide
-Type "export PATH=/home/raul/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
+Type "export PATH=/home/user/projects/loghop/.venv/bin:$HOME/.local/bin:$PATH"
 Enter
 Type "cd /tmp"
 Enter

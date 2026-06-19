@@ -4,8 +4,7 @@ type: software
 title: "loghop"
 abstract: "Stop losing context when switching AI coding assistants. loghop captures sessions from Claude Code and Codex, builds a shared project timeline, and writes handoff documents so the next agent — even a different one — picks up where the last one left off."
 authors:
-  - family-names: "Alonso"
-    given-names: "Raul"
+  - name: "Ruleh"
 version: 0.2.0
 date-released: 2026-06-10
 license: MIT
@@ -27,8 +26,7 @@ preferred-citation:
   type: article
   title: "loghop: Cross-session handoff for AI coding assistants"
   authors:
-    - family-names: "Alonso"
-      given-names: "Raul"
+    - name: "Ruleh"
   journal: "GitHub"
   year: 2026
   month: 6

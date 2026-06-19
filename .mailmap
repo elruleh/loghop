@@ -1,3 +1,7 @@
-# Canonical maintainer identity for local tools (`git shortlog`, `git blame`, etc.)
-# Format: Canonical Name <canonical@email> <old@email>
-elruleh <elruleh@users.noreply.github.com> <raul90@gmail.com>
+# Canonical maintainer identity for local tools (`git shortlog`, `git blame`, etc.).
+# Format: Canonical Name <canonical@email> <old@email>...
+# The canonical identity is the publicly displayed one. Personal / noreply
+# emails are kept as aliases so historical commits collapse to a single author.
+Ruleh <ruleh@proton.me>
+Ruleh <ruleh@proton.me> <raul90@gmail.com>
+Ruleh <ruleh@proton.me> <elruleh@users.noreply.github.com>
