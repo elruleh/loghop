@@ -141,7 +141,8 @@ refactor(store): extract session factory methods
 
 ## Additional Resources
 
-- [Operations guide](docs/operations.md) — release gates, rollback, recovery
+- [Operations guide](docs/operations.md) — support scope, rollback, recovery
+- [Release process](docs/how-to/release.md) — pre-release audit, discipline rules, step-by-step release
 - [Compatibility policy](docs/compatibility.md) — backward compatibility promises
 - [Security policy](SECURITY.md) — threat model and reporting
 
