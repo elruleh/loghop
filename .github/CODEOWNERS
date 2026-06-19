@@ -1,17 +1,26 @@
 # Code Owners
+#
+# NOTE: owner rules are disabled on purpose. As a solo maintainer, the
+# repository owner already receives all activity by default, and active
+# CODEOWNERS rules trigger a redundant `review_requested` notification
+# (and email) on every single PR, including Dependabot bumps.
+#
+# To re-enable required reviews (e.g. when a second maintainer joins),
+# uncomment the relevant rules and set `require_code_owner_reviews` on
+# the branch protection rules.
 
 # Default owners for everything in the repo.
-*                    @elruleh
+# *                    @elruleh
 
 # Source code
-/src/loghop/         @elruleh
+# /src/loghop/         @elruleh
 
 # Documentation
-/docs/               @elruleh
-*.md                 @elruleh
+# /docs/               @elruleh
+# *.md                 @elruleh
 
 # Tests
-/tests/              @elruleh
+# /tests/              @elruleh
 
 # CI/CD
-/.github/workflows/  @elruleh
+# /.github/workflows/  @elruleh
