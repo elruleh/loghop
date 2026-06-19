@@ -62,3 +62,21 @@ def test_security_supported_versions_match_current_release() -> None:
 def test_changelog_has_single_current_version_heading() -> None:
     body = _repo_path("CHANGELOG.md").read_text(encoding="utf-8")
     assert body.count(f"## [{__version__}]") == 1
+
+
+def test_codeowners_uses_real_maintainer_handle() -> None:
+    body = _repo_path(".github", "CODEOWNERS").read_text(encoding="utf-8")
+    assert "@elruleh" in body
+    assert "@raul" not in body
+
+
+def test_contributing_links_to_issue_chooser_not_deleted_markdown_templates() -> None:
+    body = _repo_path("CONTRIBUTING.md").read_text(encoding="utf-8")
+    assert ".github/ISSUE_TEMPLATE/bug_report.md" not in body
+    assert ".github/ISSUE_TEMPLATE/feature_request.md" not in body
+    assert "https://github.com/elruleh/loghop/issues/new/choose" in body
+
+
+def test_mailmap_normalizes_maintainer_identity() -> None:
+    body = _repo_path(".mailmap").read_text(encoding="utf-8")
+    assert "elruleh <elruleh@users.noreply.github.com> <raul90@gmail.com>" in body
