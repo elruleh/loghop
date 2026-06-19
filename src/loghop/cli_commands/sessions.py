@@ -121,6 +121,7 @@ def _render_tree(sessions: list[SessionMeta], term: Terminal) -> None:
 
 
 def _render_rich_tree(by_date: dict[str, list[SessionMeta]], term: Terminal) -> None:
+    from rich.text import Text
     from rich.tree import Tree
 
     console = term.console
@@ -129,7 +130,7 @@ def _render_rich_tree(by_date: dict[str, list[SessionMeta]], term: Terminal) -> 
 
     tree = Tree("sessions", guide_style="dim")
     for date in sorted(by_date.keys(), reverse=True):
-        date_branch = tree.add(f"[bold]{date}[/]")
+        date_branch = tree.add(Text(date, style="bold"))
         for s in by_date[date]:
             status_icon = _status_icon(s.status)
             sid = s.id
@@ -146,9 +147,10 @@ def _render_rich_tree(by_date: dict[str, list[SessionMeta]], term: Terminal) -> 
             if todos and isinstance(todos, list):
                 meta_parts.append(f"{len(todos)} todos")
             meta_str = f" ({', '.join(meta_parts)})" if meta_parts else ""
-            date_branch.add(
-                f"{status_icon} {sid}  {provider}  {goal_display}{extra}[dim]{meta_str}[/]"
-            )
+            label = Text(f"{status_icon} {sid}  {provider}  {goal_display}{extra}")
+            if meta_str:
+                label.append(meta_str, style="dim")
+            date_branch.add(label)
     console.print(tree)
 
 

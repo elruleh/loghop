@@ -167,7 +167,7 @@ def _source_paths() -> list[Path]:
 
         paths.append(global_config_path())
     except BaseException:  # noqa: BLE001
-        pass
+        paths.extend(())
     try:
         from loghop.store import find_project_root
 
@@ -175,7 +175,7 @@ def _source_paths() -> list[Path]:
         if root is not None:
             paths.append(root / ".loghop" / "config.toml")
     except BaseException:  # noqa: BLE001
-        pass
+        root = None
     return paths
 
 
@@ -226,7 +226,7 @@ def get_redaction_patterns() -> list[tuple[re.Pattern[str], str]]:
                     if isinstance(item, dict) and "pattern" in item and "replacement" in item
                 )
     except Exception:  # noqa: BLE001
-        pass
+        patterns.extend(())
 
     # 2. Load project config custom redaction patterns
     try:
@@ -252,7 +252,7 @@ def get_redaction_patterns() -> list[tuple[re.Pattern[str], str]]:
         # mocks ``subprocess.run`` to raise ``KeyboardInterrupt`` (e.g. to
         # simulate a Ctrl-C during the provider run), the redaction lookup
         # must be skipped, not propagate the interrupt up to the caller.
-        pass
+        patterns.extend(())
 
     _CACHE_KEY = signature
     _CACHED_PATTERNS = patterns

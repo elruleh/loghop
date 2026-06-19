@@ -25,8 +25,8 @@ def detect_terminal_emulator() -> str | None:
         configured_term = term_config.get("emulator")
         if isinstance(configured_term, str) and configured_term.strip():
             return configured_term.strip()
-    except Exception:  # noqa: BLE001
-        pass
+    except Exception as exc:  # noqa: BLE001
+        _LOGGER.debug("failed to load terminal emulator config", exc_info=exc)
 
     candidates = [
         "gnome-terminal",
@@ -248,8 +248,8 @@ def launch_in_new_tab(
         config = _load_global_config()
         term_config = config.get("terminal", {})
         template = term_config.get("template")
-    except Exception:  # noqa: BLE001
-        pass
+    except Exception as exc:  # noqa: BLE001
+        _LOGGER.debug("failed to load terminal template config", exc_info=exc)
 
     if template:
         if isinstance(template, str):

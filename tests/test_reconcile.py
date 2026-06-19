@@ -19,19 +19,24 @@ from loghop.store._session import create_session, find_session, finish_session
 CliRunner = Callable[..., tuple[int, str, str]]
 
 
-def _backdate_session(root: Path, session_id: str, hours_ago: int) -> None:
-    """Rewrite the session's ts_start frontmatter to N hours ago."""
+def _rewrite_session_start(root: Path, session_id: str, ts_start: str) -> None:
+    """Rewrite the session's ts_start frontmatter to an explicit timestamp."""
     from loghop.store._index import rebuild_index
 
     md = project_paths(root).sessions / f"{session_id}.md"
     text = md.read_text()
-    old = (datetime.now(tz=UTC) - timedelta(hours=hours_ago)).isoformat().replace("+00:00", "Z")
     # Handle both JSON and YAML for robustness in tests
-    text = re.sub(r'"ts_start":\s*"[^"]*"', f'"ts_start": "{old}"', text)
-    text = re.sub(r"ts_start:\s*.*", f"ts_start: '{old}'", text)
+    text = re.sub(r'"ts_start":\s*"[^"]*"', f'"ts_start": "{ts_start}"', text)
+    text = re.sub(r"ts_start:\s*.*", f"ts_start: '{ts_start}'", text)
     md.write_text(text)
     # Refresh the session index so list_sessions() picks up the new ts_start.
     rebuild_index(project_paths(root))
+
+
+def _backdate_session(root: Path, session_id: str, hours_ago: int) -> None:
+    """Rewrite the session's ts_start frontmatter to N hours ago."""
+    old = (datetime.now(tz=UTC) - timedelta(hours=hours_ago)).isoformat().replace("+00:00", "Z")
+    _rewrite_session_start(root, session_id, old)
 
 
 def _stage_claude_transcript(cwd: Path, payload: dict[str, object]) -> Path:
@@ -177,6 +182,28 @@ class TestSessionsReconcileCommand:
         code, stdout, _ = cli(["sessions", "reconcile"], cwd=root)
         assert code == 0
         assert "no running sessions to reconcile" in stdout.lower()
+
+    def test_command_reports_salvage_with_small_future_skew(
+        self, cli: CliRunner, tmp_path: Path
+    ) -> None:
+        root = init_repo(tmp_path)
+        session = create_session(root, provider="claude", goal="g")
+        skewed = (datetime.now(tz=UTC) + timedelta(seconds=5)).isoformat().replace("+00:00", "Z")
+        _rewrite_session_start(root, session.id, skewed)
+        _stage_claude_transcript(
+            root,
+            {
+                "type": "assistant",
+                "message": {
+                    "role": "assistant",
+                    "content": [{"type": "text", "text": "rescued despite skew."}],
+                },
+                "timestamp": datetime.now(tz=UTC).isoformat().replace("+00:00", "Z"),
+            },
+        )
+        code, stdout, _ = cli(["sessions", "reconcile"], cwd=root)
+        assert code == 0
+        assert "recovered 1 turns" in stdout.lower()
 
     def test_command_reconcile_continues_after_corrupt_session(
         self, cli: CliRunner, tmp_path: Path
