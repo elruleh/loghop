@@ -1,22 +1,22 @@
 ---
 layout: landing
 title: loghop dashboard demo
-description: Watch the loghop CLI dashboard show repo state, goal and last session.
+description: Watch the loghop TUI browse real projects, sessions and handoffs.
 ---
 
 <section class="shell hero">
   <div>
-    <div class="eyebrow">Dashboard demo</div>
-    <h1>The first thing you see when you run <code>loghop</code>.</h1>
-    <p class="lead">Plain output: the project goal, the last session, the default provider. The full Textual TUI is available via <code>loghop tui</code>; a static preview lives below.</p>
+    <div class="eyebrow">TUI demo</div>
+    <h1>Browse every project, session and handoff from one screen.</h1>
+    <p class="lead">The Textual TUI (<code>loghop tui</code>) lists all your registered projects, their session timelines and built handoffs. The demo below runs against a seeded six-project workspace.</p>
     <div class="actions">
-      <a class="button primary" href="{{ '/img/demo/loghop-dashboard-demo.mp4' | relative_url }}">Open MP4</a>
+      <a class="button primary" href="{{ '/img/demo/loghop-tui-demo.mp4' | relative_url }}">Open MP4</a>
       <a class="button secondary" href="{{ '/img/loghop-tui.svg' | relative_url }}">View TUI preview</a>
     </div>
   </div>
-  <div class="terminal" aria-label="loghop dashboard video demo">
-    <video controls autoplay muted loop playsinline preload="metadata" poster="{{ '/img/demo/loghop-dashboard-demo-poster.png' | relative_url }}" style="width:100%;height:auto;display:block;border-radius:12px;">
-      <source src="{{ '/img/demo/loghop-dashboard-demo.mp4' | relative_url }}" type="video/mp4">
+  <div class="terminal" aria-label="loghop TUI video demo">
+    <video controls autoplay muted loop playsinline preload="metadata" poster="{{ '/img/demo/loghop-tui-demo-poster.png' | relative_url }}" style="width:100%;height:auto;display:block;border-radius:12px;">
+      <source src="{{ '/img/demo/loghop-tui-demo.mp4' | relative_url }}" type="video/mp4">
     </video>
   </div>
 </section>
