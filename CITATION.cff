@@ -6,7 +6,6 @@ abstract: "Stop losing context when switching AI coding assistants. loghop captu
 authors:
   - family-names: "Alonso"
     given-names: "Raul"
-    orcid: "https://orcid.org/0000-0000-0000-0000"
 version: 0.2.0
 date-released: 2026-06-10
 license: MIT

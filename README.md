@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/elruleh/loghop">
-    <img src="docs/img/logo-banner-a.svg" alt="loghop" width="500">
+    <img src="docs/img/logo-banner.svg" alt="loghop" width="500">
   </a>
 </p>
 
@@ -285,6 +285,7 @@ Full command reference: `loghop --help` or see the [docs](https://elruleh.github
 - **Test coverage:** 80%+ with CI on Python 3.12 and 3.13
 - **License:** MIT
 - **Providers:** Claude Code, Codex (auto-detected from `PATH`)
+- **Smoke test a published release:** `bash scripts/smoke_published.sh --version <vX.Y.Z> --repository pypi`
 
 
 ## Security & Privacy
@@ -326,13 +327,19 @@ Loghop is not affiliated with, endorsed by, or connected to Anthropic or OpenAI.
 
 ## Used by
 
-Projects and teams using loghop in production or for personal workflows:
+loghop is early-stage software. If you are using it in production or for a
+personal workflow and are happy to be listed, please open a PR adding your
+project to this section, or share it in
+[Show and tell](https://github.com/elruleh/loghop/discussions/categories/show-and-tell).
 
-<!-- Add your project here via a PR to README.md -->
-<!-- Format: [name](url) — short description -->
-- _Add your project here_
+Format for entries:
 
-Want to be listed? Open a PR adding your project, or share it in [Show and tell](https://github.com/elruleh/loghop/discussions/categories/show-and-tell).
+```markdown
+- [Project name](https://example.com) — short, factual description
+```
+
+No live entries yet. The first contribution is always the hardest; thanks
+for considering it.
 
 ---
 

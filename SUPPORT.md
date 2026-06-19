@@ -20,6 +20,10 @@ For security vulnerabilities, please report privately:
 - **Feature requests:** We review periodically
 - **Security:** Critical issues resolved within 7 days
 
+> Note: `loghop` is maintained by a single person in their spare time.
+> Issues and discussions are answered best-effort. For anything urgent
+> (security, abuse, takedown), use the private channel above.
+
 ## Common Issues
 
 ### Installation Problems

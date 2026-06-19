@@ -1,4 +1,15 @@
 name: Close stale issues and PRs
+#
+# Scope: marks issues/PRs as stale after a long quiet period and
+# closes them if no follow-up arrives. Intended for low-signal
+# traffic, not active bug reports.
+#
+# Maintenance:
+#   - `days-before-stale` is intentionally high (60d) to avoid
+#     closing legitimate user reports before the maintainer has
+#     a chance to triage them.
+#   - As the project grows, prefer a per-label policy that opts
+#     `bug` and `security` out of the auto-close.
 
 on:
   schedule:

@@ -1,4 +1,13 @@
 # Config for first-interaction bot
+#
+# Scope: greets first-time contributors with a short pointer to the
+# contribution guide. Limited to PRs and issues to keep noise low on
+# routine bug reports.
+#
+# Maintenance:
+#   - Keep messages in sync with CONTRIBUTING.md and SUPPORT.md.
+#   - If you want to silence the bot, prefer disabling the workflow
+#     from the Actions tab so the configuration remains auditable.
 firstPRWelcomeMessage: "👋 Thanks for opening your first PR in loghop! A maintainer will review it shortly. While you wait, feel free to join the discussion or browse other open issues."
 firstIssueWelcomeMessage: "👋 Thanks for opening your issue in loghop! A maintainer will take a look. If it's a question rather than a bug, consider asking in Discussions for faster community help."
 firstPRTemplate: ""
