@@ -1,17 +1,17 @@
 # Code Owners
 
 # Default owners for everything in the repo.
-*       @raul
+*                    @elruleh
 
 # Source code
-/src/loghop/       @raul
+/src/loghop/         @elruleh
 
 # Documentation
-/docs/            @raul
-*.md              @raul
+/docs/               @elruleh
+*.md                 @elruleh
 
 # Tests
-/tests/           @raul
+/tests/              @elruleh
 
 # CI/CD
-/.github/workflows/    @raul
+/.github/workflows/  @elruleh

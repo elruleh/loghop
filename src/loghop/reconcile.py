@@ -15,6 +15,7 @@ from loghop.store._models import SessionMeta
 from loghop.store._session import list_sessions
 
 _LOGGER = get_logger()
+_RECONCILE_CLOCK_SKEW_TOLERANCE = timedelta(seconds=10)
 
 
 def find_running_sessions(root: Path, *, older_than: timedelta | None = None) -> list[SessionMeta]:
@@ -55,10 +56,20 @@ def reconcile_session(root: Path, session: SessionMeta) -> dict[str, Any]:
     # to "1 week ago", which made it easy for reconcile to grab an old,
     # unrelated transcript. Limit to the last hour — wide enough to cover
     # clock skew, narrow enough to avoid cross-session bleeding.
+    #
+    # We also subtract a small skew tolerance from parsed ts_start. Session
+    # timestamps come from `utc_now()` (second-rounded and process-monotonic),
+    # while transcript mtimes/timestamps come from the real wall clock. Under
+    # fast test runs or slight clock drift, `ts_start` can end up a few seconds
+    # ahead of the transcript file, causing explicit `sessions reconcile` to
+    # intermittently miss a transcript that was actually created by the same run.
     try:
-        launch_ts = datetime.fromisoformat(ts) if ts else datetime.now(tz=UTC) - timedelta(hours=1)
+        parsed_launch_ts = (
+            datetime.fromisoformat(ts) if ts else datetime.now(tz=UTC) - timedelta(hours=1)
+        )
     except ValueError:
-        launch_ts = datetime.now(tz=UTC) - timedelta(hours=1)
+        parsed_launch_ts = datetime.now(tz=UTC) - timedelta(hours=1)
+    launch_ts = parsed_launch_ts - _RECONCILE_CLOCK_SKEW_TOLERANCE
 
     status = SessionStatus.INTERRUPTED
     ctx = SessionContext.from_args(root, session_id, provider, launch_ts)

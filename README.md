@@ -1,11 +1,11 @@
 <p align="center">
   <a href="https://github.com/elruleh/loghop">
-    <img src="docs/img/logo-banner-a.svg" alt="loghop" width="500">
+    <img src="docs/img/logo-banner.svg" alt="loghop" width="500">
   </a>
 </p>
 
 <p align="center">
-  <em>Switch AI coding assistants without starting over</em>
+  <strong>Stop losing context when switching AI coding assistants</strong>
 </p>
 
 <p align="center">
@@ -15,32 +15,93 @@
 <a href="https://pypi.org/project/loghop">
   <img src="https://img.shields.io/pypi/pyversions/loghop.svg?color=%2334D058" alt="Supported Python versions">
 </a>
-<a href="https://github.com/elruleh/loghop/actions/workflows/ci.yml?query=branch%3Amain">
+<a href="https://github.com/elruleh/loghop/actions/workflows/ci.yml?query=branch%3amain">
   <img src="https://github.com/elruleh/loghop/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI">
+</a>
+<a href="https://static.pepy.tech/badge/loghop">
+  <img src="https://static.pepy.tech/badge/loghop" alt="Downloads">
+</a>
+<a href="https://codecov.io/gh/elruleh/loghop">
+  <img src="https://codecov.io/gh/elruleh/loghop/branch/main/graph/badge.svg" alt="Coverage">
 </a>
 <a href="https://opensource.org/licenses/MIT">
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
 </a>
+<a href="https://elruleh.github.io/loghop/">
+  <img src="https://img.shields.io/badge/docs-elruleh.github.io%2Floghop-blue" alt="Documentation">
+</a>
 </p>
 
 <p align="center">
-<a href="https://elruleh.github.io/loghop/">Docs</a> ·
-<a href="#install">Install</a> ·
+<a href="#why-loghop">Why?</a> ·
 <a href="#quick-start">Quick start</a> ·
-<a href="#commands">Commands</a> ·
 <a href="#how-it-works">How it works</a> ·
-<a href="#terminal-ui">Terminal UI</a> ·
-<a href="#security">Security</a> ·
+<a href="#vs-alternatives">vs Alternatives</a> ·
+<a href="https://elruleh.github.io/loghop/">Docs</a> ·
 <a href="#contributing">Contributing</a>
 </p>
 
 ---
 
-Use **Claude Code** for a while. Switch to **Codex** later. Pick up where you left off.
+**loghop** lets you switch between AI coding assistants (Claude Code, Codex) without losing context. It captures every session, builds a shared timeline, and generates handoff documents so the next agent—even a different one—can pick up exactly where you left off.
 
-loghop captures every session from your AI coding agents, builds a shared timeline,
-and writes handoff context so the next run — even with a different provider — resumes
-cleanly. No lost decisions, no repeated work, no copy-pasting summaries between terminals.
+<p align="center">
+  <a href="https://elruleh.github.io/loghop/demo.html">
+    <img src="docs/img/demo/loghop-quickstart.gif" alt="loghop quickstart demo" width="800">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://elruleh.github.io/loghop/demo.html">▶ Watch video demo</a> · <a href="docs/img/demo/loghop-quickstart.mp4">MP4 asset</a>
+</p>
+
+<p align="center">
+  <a href="https://star-history.com/#elruleh/loghop&Date">
+    <img src="https://api.star-history.com/svg?repos=elruleh/loghop&type=Date" alt="Star History Chart" width="500">
+  </a>
+</p>
+
+## Why loghop?
+
+- **You lose context every time you switch assistants.** Claude Code runs out of thinking budget. Codex gives better answers for your stack. But starting over means re-explaining decisions, copy-pasting summaries, or losing the thread entirely.
+- **AI assistants don't know what the last one did.** Each session is isolated. No shared memory. You waste time catching them up instead of moving forward.
+- **Manual handoffs are fragile.** Copying session logs between terminals breaks. Forgetting a key decision costs hours. You shouldn't need to be the glue.
+- **You want to use the right tool for each task.** Some problems need deep reasoning. Others need fast iteration. loghop lets you switch freely without starting over.
+
+## Quick start
+
+**Install** (requires Python 3.12+):
+
+```bash
+pipx install loghop
+# or
+uv tool install loghop
+```
+
+**Initialize** in any Git repository:
+
+```bash
+loghop init              # one-time setup
+loghop run               # start your first session
+loghop goal "Ship auth"  # set a goal so next run stays focused
+```
+
+That's it. Every `loghop run` from now on:
+1. Builds a handoff from your project's timeline
+2. Launches your AI assistant (Claude Code or Codex)
+3. Captures the transcript when it finishes
+4. Appends the session to the shared timeline
+
+Switch providers anytime:
+
+```bash
+loghop run --provider codex   # switch to Codex
+loghop run --provider claude  # back to Claude Code
+```
+
+The next assistant gets the full context automatically.
+
+## Example workflow
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -68,104 +129,45 @@ cleanly. No lost decisions, no repeated work, no copy-pasting summaries between 
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-<p align="center">
-  <img src="docs/img/loghop-tui.svg" alt="loghop terminal UI" width="100%">
-</p>
 
-## Key features
+## vs Alternatives
 
-- **Automatic session capture** — reads native transcripts from Claude Code and Codex, redacts secrets, stores them locally
-- **Seamless handoffs** — builds context packets so the next provider knows what happened before
-- **Shared timeline** — every session across every provider, in one `timeline.jsonl`
-- **Terminal UI** — browse projects, sessions, and handoffs with Textual (4 built-in themes)
-- **Zero-config providers** — Claude and Codex are auto-detected from `PATH`
-- **Security-first** — all files `0600`, atomic writes, regex redaction of API keys/tokens/JWTs
+| Approach | Context Transfer | Multi-Provider | Automatic | Security |
+|----------|------------------|----------------|-----------|----------|
+| **loghop** | ✅ Structured handoffs | ✅ Claude + Codex | ✅ Auto-capture | ✅ Secret redaction, 0600 perms |
+| Aider | ❌ None (single-session tool) | ❌ Aider only | N/A | ✅ Good |
+| Claude Code sessions | ⚠️ Project files only | ❌ Claude only | ✅ Native | ✅ Good |
+| Manual copy-paste | ⚠️ Fragile, error-prone | ✅ Any | ❌ Manual work | ❌ Risk of leaking secrets |
+| swe-agent | ❌ No handoff support | ❌ Single agent | ❌ No | ⚠️ Depends on implementation |
 
-## Install
+**Why not just use Claude's session history?** Claude Code keeps project context between runs, but only for Claude. If you switch to Codex (or any other assistant), you start from zero. loghop gives you shared memory across providers.
 
-Python 3.12+, Git, Linux/macOS. Windows is best-effort: the core CLI works, but a few optional hooks (POSIX PATH shim, `bash -c env -0` shell probe for Claude credentials) gracefully degrade or disable themselves on non-POSIX shells.
-
-```bash
-pipx install loghop
-# or
-uv tool install loghop
-```
-
-For the terminal UI (pulls in [Textual](https://github.com/Textualize/textual)):
-
-```bash
-pipx install 'loghop[tui]'
-```
-
-## Quick start
-
-```bash
-# Inside any Git repo:
-loghop init              # one-time setup (hooks, shim, prompt — asks once)
-loghop run               # start or resume a session
-loghop goal "Ship auth"  # set a goal so the next run stays focused
-```
-
-That's it. Every `loghop run` now:
-
-1. Builds a handoff from the project's timeline
-2. Launches the provider (Claude or Codex)
-3. Captures the transcript when it finishes
-4. Appends the session to the shared timeline
-
-## Commands
-
-```
-loghop init                                  set up in the current repo
-loghop run [<project>] [--provider ...]      start or resume a session
-loghop goal "<text>"                         set a default project goal
-loghop sessions                              browse recorded provider runs
-loghop topics                                group related sessions by work item
-loghop timeline                              inspect shared work by day/provider
-loghop projects                              list registered projects
-loghop projects remove|purge                 unregister or purge a project
-loghop doctor [--fix]                        check or repair install state
-loghop health                                run project health checks
-loghop metrics [--format <format>]           export project metrics (summary, prometheus, json, yaml)
-loghop backup create|restore                 backup or restore local loghop data
-loghop migrate [--dry-run]                   migrate local metadata schema
-loghop tui                                   open the terminal UI
-```
-
-`--provider` is optional. If omitted, loghop picks the last-used provider for the
-project — or the first one on `PATH`.
-
-<details>
-<summary>Full command reference</summary>
-
-```bash
-loghop install                               first-time global install
-loghop uninstall [--purge] [-y]              remove loghop artifacts
-loghop install-aliases                       install shell aliases in profiles
-loghop uninstall-aliases                     uninstall shell aliases from profiles
-loghop completion {bash,zsh,fish}            shell tab-completion
-loghop providers                             list available providers
-
-loghop handoff build|list|show               manage handoff documents
-loghop resume [<project>] [--provider ...]   resume a previous session/topic
-loghop topics list|show|switch|close|rename  manage work topics
-loghop sessions show|annotate|reconcile      inspect and fix sessions
-loghop projects show|remove|purge|cleanup    manage the project registry
-loghop wrap {codex,claude} [provider args]   transparent provider wrapper
-loghop journal [--since 7d] [--all]          session journal
-loghop timeline [--since 12h] [--provider]   timeline view
-loghop status                                project status overview
-loghop health                                production-style health checks
-loghop metrics [--format <format>]           export project metrics (summary, prometheus, json, yaml)
-loghop backup create|restore                 backup or restore local loghop data
-loghop migrate [--dry-run]                   migrate local metadata schema
-```
-
-Global flags: `--json`, `--plain`, `--quiet`, `--verbose`, `--version`, `--global`.
-
-</details>
+**Why not Aider?** Aider is excellent for interactive coding with Git integration, but it's a single tool, not a handoff system. If you want to switch from Aider to Claude Code mid-task, you're back to copy-pasting.
 
 ## How it works
+
+1. **Run your AI assistant through loghop:**
+   ```bash
+   loghop run --provider claude
+   ```
+   loghop builds a handoff document from your timeline and launches Claude Code.
+
+2. **Work normally.** Claude Code (or Codex) runs as usual. You don't change your workflow.
+
+3. **loghop captures everything automatically.** When the session ends, loghop:
+   - Reads the provider's native transcript (`~/.claude/projects/...` or `~/.codex/sessions/...`)
+   - Redacts secrets (API keys, tokens, JWTs)
+   - Stores session metadata in `.loghop/sessions/S-001.md`
+   - Appends to the shared timeline (`.loghop/timeline.jsonl`)
+   - Generates a handoff document (`.loghop/handoffs/H-001.md`) for the next run
+
+4. **Switch providers seamlessly:**
+   ```bash
+   loghop run --provider codex
+   ```
+   Codex starts with the full context from your Claude session. No manual copy-paste.
+
+**Architecture:**
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -173,18 +175,13 @@ Global flags: `--json`, `--plain`, `--quiet`, `--verbose`, `--version`, `--globa
 │  build handoff│    │ Claude/Codex │    │  transcript  │
 └─────────────┘     └─────────────┘     └──────┬──────┘
                                                 │
-                          ┌─────────────────────▼──────────────────────┐
+                          ┌─────────────────────▼─────────────────────┐
                           │              .loghop/                       │
                           │  timeline.jsonl  ← shared across providers │
                           │  sessions/S-*.md ← redacted metadata       │
                           │  handoffs/H-*.md ← context for next run    │
                           └────────────────────────────────────────────┘
 ```
-
-After each run, loghop reads the provider's native transcript
-(`~/.claude/projects/...` for Claude, `~/.codex/sessions/...` for Codex),
-redacts secrets, and stores it under `.loghop/sessions/`. The next `loghop run`
-builds a handoff from the timeline so the provider gets full context.
 
 ### Integration layers
 
@@ -220,25 +217,30 @@ alias claude='loghop wrap claude'
 alias codex='loghop wrap codex'
 ```
 
-### Cross-project usage
+## Supported Providers
 
-```bash
-loghop run my-project                 # cd into registered project, then resume
-loghop journal --since 7d             # last week of sessions in current repo
-loghop journal --all --since 30d      # last month across all projects
-```
+- **Claude Code** (Anthropic) — Auto-detected from `PATH`
+- **Codex** (OpenAI) — Auto-detected from `PATH`
+
+Run `loghop providers` to see what's available on your system. Both providers work without configuration; loghop finds them automatically.
 
 ## Terminal UI
 
-When stdout is a terminal and Textual is installed, running `loghop` (no
-arguments) opens an interactive TUI. Use `loghop tui` to open it explicitly.
+Optional interactive TUI for browsing projects, sessions, and handoffs:
 
 ```bash
-pipx install 'loghop[tui]'
+pipx install 'loghop[tui]'  # install with Textual
+loghop tui                   # launch the TUI
 ```
 
 <p align="center">
-  <img src="docs/img/loghop-tui.svg" alt="loghop TUI with Harbor dark theme" width="100%">
+  <a href="https://elruleh.github.io/loghop/tui.html">
+    <img src="docs/img/loghop-tui.svg" alt="loghop TUI with Harbor dark theme" width="100%">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://elruleh.github.io/loghop/tui.html">▶ Watch TUI demo</a>
 </p>
 
 - **Home screen** — global project list and status
@@ -246,91 +248,107 @@ pipx install 'loghop[tui]'
 - **Command palette** — press `m` to search and run commands
 - **4 themes** — Classic dark/light, Harbor dark/light
 
-## Storage layout
+## Commands
 
-```text
-.loghop/
-  config.toml                    goal, handoff counter, session counter
-  handoffs/
-    H-001.md                     markdown with YAML frontmatter metadata
-  topics/
-    T-001.md                     work topic grouping related sessions
-  timeline.jsonl                 canonical timeline across providers
-  sessions/
-    S-001.md                     session metadata (goal, topic, status, summary, todos)
-    S-001.transcript.jsonl       redacted turns from the provider transcript
-  .loghopignore                  patterns excluded from the handoff packet
-loghop.md                        regenerated summary (goal + repo snapshot)
-
-~/.loghop/projects.toml          global registry of all loghop projects
-~/.loghop/config.toml            global init/install choices
-~/.loghop/loghop-prompt.md       optional prompt include
+**Core workflow:**
+```
+loghop init                      set up in current repo
+loghop run [--provider <name>]   start or resume a session
+loghop goal "<text>"             set a project goal
+loghop status                    project overview
 ```
 
-`loghop init` adds both `loghop.md` and `.loghop/` to `.gitignore`.
+**Browse and inspect:**
+```
+loghop sessions                  list all sessions
+loghop timeline                  view shared timeline
+loghop handoff list              show handoff history
+loghop tui                       open terminal UI
+```
 
-## Providers
+**Advanced:**
+```
+loghop topics                    group related sessions
+loghop projects                  manage project registry
+loghop health                    run health checks
+loghop backup create|restore     backup/restore data
+loghop install-aliases           auto-capture on direct provider calls
+```
 
-**Claude Code** and **Codex**. Auto-detected from `PATH` — no configuration
-needed. Run `loghop providers` to see what's available.
+Full command reference: `loghop --help` or see the [docs](https://elruleh.github.io/loghop/).
 
-## Exit codes
+## Status
 
-| Code | Meaning |
-|---|---|
-| 0 | success |
-| 1 | unexpected internal error |
-| 2 | usage / validation error |
-| 3 | timeout |
-| 10 | provider run exited non-zero |
-| 20 | project not initialized |
+- **Current version:** 0.2.0 ([changelog](CHANGELOG.md))
+- **Python requirement:** 3.12+
+- **Platforms:** Linux, macOS (primary); Windows (best-effort — core CLI works, some POSIX-specific features degrade gracefully)
+- **Test coverage:** 80%+ with CI on Python 3.12 and 3.13
+- **License:** MIT
+- **Providers:** Claude Code, Codex (auto-detected from `PATH`)
+- **Smoke test a published release:** `bash scripts/smoke_published.sh --version <vX.Y.Z> --repository pypi`
 
-## Security
 
-- All files under `.loghop/` are written with mode `0o600` on POSIX; on Windows the same `0600`/`0700` intent is applied via `os.chmod` best-effort, but the OS may map these differently.
-- Atomic writes via `tempfile.mkstemp` + `os.replace` + `fsync`.
-- `loghop health`, `loghop metrics`, `loghop backup`, and `loghop migrate` support operational checks, observability, recovery, and schema upgrades.
-- File reads reject symlinks; `.loghop/` paths are validated before use.
-- Per-project lock on handoff creation prevents duplicate IDs under concurrent runs.
-- Every handoff, transcript, and `loghop.md` passes through a regex redactor that
-  strips API keys, bearer tokens, JWTs, and URLs with embedded credentials.
-- Handoff and session artifacts include an HMAC signature over metadata and markdown body, backed by a private per-project `.loghop/integrity.key`.
-- Capture survives interruption — `Ctrl+C`, rate-limit kills, and provider timeouts
-  all trigger a `try/finally` that sweeps partial transcripts. Sessions left as
-  `running` for over 1 hour are auto-finalized on the next invocation; explicit
-  recovery via `loghop sessions reconcile`.
+## Security & Privacy
 
-## Built with
+**loghop keeps everything local.** No cloud sync, no external services. All data stays on your machine.
 
-- [Rich](https://github.com/Textualize/rich) — terminal formatting
-- [Textual](https://github.com/Textualize/textual) — terminal UI framework
-- [PyYAML](https://github.com/yaml/pyyaml) — frontmatter and config parsing
+- **Secret redaction:** API keys, tokens, JWTs, and credential URLs are automatically stripped from transcripts
+- **File permissions:** All `.loghop/` files are written `0600` (owner-only read/write)
+- **Atomic writes:** `tempfile.mkstemp` + `os.replace` + `fsync` prevents corruption
+- **HMAC integrity:** Session and handoff artifacts include cryptographic signatures
+- **Symlink protection:** File reads reject symlinks; paths are validated before use
+- **Graceful interruption:** `Ctrl+C` and timeouts trigger cleanup; partial transcripts are recovered automatically
+
+## Links
+
+- **PyPI:** [pypi.org/project/loghop](https://pypi.org/project/loghop)
+- **Documentation:** [elruleh.github.io/loghop](https://elruleh.github.io/loghop/)
+- **Issues:** [github.com/elruleh/loghop/issues](https://github.com/elruleh/loghop/issues)
+- **Changelog:** [CHANGELOG.md](CHANGELOG.md)
+- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Contributing
 
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for development
-setup, coding standards, and the release process. For documentation, see the [docs
-folder](docs/).
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup.
 
+**Quick start:**
 ```bash
 git clone https://github.com/elruleh/loghop.git
 cd loghop
 uv sync --all-extras --dev
 bash scripts/release_check.sh qa
-python3 scripts/e2e_user_flow.py --skip-pytest --skip-smoke
 ```
 
 ## License
 
-[MIT](LICENSE) — use it however you like.
-
-## Disclaimer
+MIT — see [LICENSE](LICENSE).
 
 Loghop is not affiliated with, endorsed by, or connected to Anthropic or OpenAI.
+
+## Used by
+
+loghop is early-stage software. If you are using it in production or for a
+personal workflow and are happy to be listed, please open a PR adding your
+project to this section, or share it in
+[Show and tell](https://github.com/elruleh/loghop/discussions/categories/show-and-tell).
+
+Format for entries:
+
+```markdown
+- [Project name](https://example.com) — short, factual description
+```
+
+No live entries yet. The first contribution is always the hardest; thanks
+for considering it.
 
 ---
 
 <p align="center">
+  Made with ♥️ by developers tired of copy-pasting context between AI assistants.
+</p>
+
+<p align="center">
   <a href="https://github.com/elruleh/loghop/issues/new/choose">Report a bug</a> ·
-  <a href="https://github.com/elruleh/loghop/issues/new/choose">Request a feature</a>
+  <a href="https://github.com/elruleh/loghop/issues/new/choose">Request a feature</a> ·
+  <a href="https://github.com/elruleh/loghop/discussions">Discussions</a>
 </p>

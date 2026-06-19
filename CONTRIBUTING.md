@@ -68,6 +68,15 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 [optional footer]
 ```
 
+### Public history hygiene
+
+This repository keeps a clean public history on purpose.
+
+- Use **your own GitHub identity** consistently when authoring commits.
+- Do **not** add AI-vendor co-author trailers (for example Anthropic/Claude, Copilot, etc.) to commits intended for `main` unless a real human co-author should be credited.
+- If you used AI assistance, capture that in the PR description or notes instead of polluting the permanent contributor graph.
+- Prefer one clear, reviewable PR over a burst of tiny cosmetic commits when polishing docs/assets.
+
 **Types:**
 
 | Type | When to use |
@@ -127,8 +136,7 @@ refactor(store): extract session factory methods
 
 ## Reporting Issues
 
-- Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.md) for bugs
-- Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md) for enhancements
+- Use the [issue chooser](https://github.com/elruleh/loghop/issues/new/choose) for bugs and feature requests
 - For security issues: [private reporting channel](https://github.com/elruleh/loghop/security/advisories/new)
 
 ## Additional Resources

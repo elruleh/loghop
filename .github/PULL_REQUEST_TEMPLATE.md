@@ -16,12 +16,11 @@
 ## Checklist
 
 - [ ] Tests added or updated
-- [ ] CHANGELOG.md updated (Unreleased section)
+- [ ] CHANGELOG.md updated (Unreleased section, for user-facing changes)
 - [ ] `uv run ruff format --check src tests scripts` passes
 - [ ] `uv run ruff check src tests scripts` passes
 - [ ] `uv run mypy src` passes
 - [ ] `uv run pytest --cov=loghop` passes
-- [ ] If adding a new provider: fixtures added in `tests/fixtures/transcripts/`
 
 ## Additional context
 

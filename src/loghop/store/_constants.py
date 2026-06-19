@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from enum import StrEnum
 from pathlib import Path
 
@@ -68,7 +68,11 @@ def utc_now() -> str:
     global _LAST_UTC_NOW
     now = datetime.now(tz=UTC).replace(microsecond=0)
     if _LAST_UTC_NOW is not None and now < _LAST_UTC_NOW:
-        now = _LAST_UTC_NOW + timedelta(seconds=1)
+        # Clamp to the latest timestamp we already emitted instead of adding
+        # another synthetic second. A strict `+1s` step can drift arbitrarily
+        # far into the future under repeated small backwards clock skews,
+        # which then breaks transcript discovery and reconcile windows.
+        now = _LAST_UTC_NOW
     _LAST_UTC_NOW = now
     return now.isoformat().replace("+00:00", "Z")
 

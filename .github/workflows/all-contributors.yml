@@ -1,0 +1,19 @@
+name: All Contributors
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  all-contributors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add new contributors
+        uses: JoshuaKGoldberg/all-contributors-auto-action@v0.3.2

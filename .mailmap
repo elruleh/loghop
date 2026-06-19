@@ -1,0 +1,3 @@
+# Canonical maintainer identity for local tools (`git shortlog`, `git blame`, etc.)
+# Format: Canonical Name <canonical@email> <old@email>
+elruleh <elruleh@users.noreply.github.com> <raul90@gmail.com>
