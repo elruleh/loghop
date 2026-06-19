@@ -58,6 +58,9 @@ marketing/
 .factory/
 skills-lock.json
 
+# Marketing drafts and launch collateral (local-only, not for public repo)
+marketing/
+
 # Internal/generated docs and media (not for public release)
 docs/superpowers/
 docs/video/
