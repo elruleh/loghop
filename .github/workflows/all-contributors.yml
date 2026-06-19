@@ -12,11 +12,20 @@ permissions:
 
 jobs:
   all-contributors:
-    if: ${{ hashFiles('.all-contributorsrc') != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Detect all-contributors config
+        id: config
+        run: |
+          if [ -f .all-contributorsrc ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No .all-contributorsrc present; skipping workflow."
+          fi
       - name: Add new contributors
+        if: steps.config.outputs.present == 'true'
         uses: JoshuaKGoldberg/all-contributors-auto-action@v0.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
