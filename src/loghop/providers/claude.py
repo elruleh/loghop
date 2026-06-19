@@ -258,8 +258,10 @@ def _probe_shell_claude_environment() -> dict[str, str]:
     if completed.returncode != 0:
         return {}
 
+    stdout = completed.stdout
+    stdout_text = stdout if isinstance(stdout, str) else stdout.decode(errors="replace")
     claude_env: dict[str, str] = {}
-    for entry in completed.stdout.decode(errors="replace").split("\0"):
+    for entry in stdout_text.split("\0"):
         if "=" not in entry:
             continue
         key, value = entry.split("=", 1)

@@ -254,8 +254,10 @@ class TestSessionsReconcile:
 class TestSessionsRichRendering:
     def test_sessions_list_rich_tree(self, initialized_repo: Path) -> None:
         create_session(initialized_repo, provider="codex", goal="rich goal")
-        code, _stdout, _ = _cli_rich(["sessions", "list"], initialized_repo)
+        code, stdout, _ = _cli_rich(["sessions", "list"], initialized_repo)
         assert code == 0
+        assert "[bold]" not in stdout
+        assert "[dim]" not in stdout
 
     def test_sessions_list_no_sessions_rich(self, initialized_repo: Path) -> None:
         code, stdout, _ = _cli_rich(["sessions", "list"], initialized_repo)
