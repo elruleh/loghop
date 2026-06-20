@@ -1,3 +1,7 @@
+# Dependabot weekly updates. Grouping keeps the PR queue short, and the
+# ``dependabot-auto-merge.yml`` workflow merges minor/patch bumps
+# automatically once CI is green. Major bumps are grouped separately and
+# left for human review (breaking changes can slip past the test gate).
 version: 2
 updates:
   - package-ecosystem: "pip"
@@ -11,6 +15,8 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # Major bumps of runtime deps fall outside the group above and open as
+    # standalone PRs so the auto-merge workflow can hold them for review.
     open-pull-requests-limit: 5
 
   - package-ecosystem: "github-actions"
@@ -22,7 +28,11 @@ updates:
         patterns:
           - "*"
         update-types:
-          - "major"
           - "minor"
           - "patch"
+      github-actions-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     open-pull-requests-limit: 2

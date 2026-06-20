@@ -1,6 +1,12 @@
 name: ci
 
-on: [push, pull_request]
+# Triggers deduped: ``push`` only on ``main`` (post-merge safety net) so a
+# push to a PR branch no longer fires a redundant run alongside the
+# ``pull_request`` event. Cuts CI time ~50% on PR branches.
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 concurrency:
   group: ci-${{ github.ref }}

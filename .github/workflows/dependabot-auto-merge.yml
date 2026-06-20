@@ -1,0 +1,68 @@
+name: dependabot-auto-merge
+
+# Auto-approves and enqueues auto-merge for Dependabot PRs that are NOT a
+# semver-major bump. Once the required CI checks (release-check + test
+# matrix on ubuntu/macos for py 3.12/3.13) pass, GitHub merges them
+# automatically. Major bumps stay open for human review because breaking
+# changes (new node majors, removed inputs, changed defaults) are not
+# always caught by the test gate.
+#
+# Prerequisites (already in place):
+#   - Repo setting ``allow_auto_merge`` is enabled.
+#   - ``main`` branch protection has ``required_approving_review_count = 0``
+#     so the auto-merge is not blocked waiting for a review that nobody
+#     can give to a bot-authored PR.
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+# Avoid racing the dependabot-auto-merge job against itself if Dependabot
+# pushes twice in quick succession.
+concurrency:
+  group: dependabot-automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    # Only Dependabot PRs. Anything authored by a human or another bot is
+    # left alone for normal review.
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Approve and enable auto-merge (minor / patch only)
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          echo "Bump type: ${{ steps.metadata.outputs.update-type }} -> auto-merging"
+          # Approve first so the PR is never left in a "review required"
+          # state, then request squash auto-merge. GitHub performs the
+          # actual merge once every required status check is green.
+          gh pr review "$PR_NUMBER" --approve \
+            --body "Auto-approved: non-major Dependabot bump. Will squash-merge automatically once CI passes."
+          gh pr merge "$PR_NUMBER" --squash --auto \
+            --subject "$(gh pr view "$PR_NUMBER" --json title --jq '.title') (#$PR_NUMBER)"
+
+      - name: Hold major bumps for human review
+        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          echo "Bump type: ${{ steps.metadata.outputs.update-type }} -> left for human review"
+          gh pr comment "$PR_NUMBER" --body \
+            "Hold for human review: semver-major bump. Inspect changelog for breaking changes (removed inputs, changed defaults, new node major). If safe, approve + merge manually."
