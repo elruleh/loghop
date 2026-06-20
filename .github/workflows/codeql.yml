@@ -1,9 +1,12 @@
 name: CodeQL
 
+# NOTE: `pull_request` trigger removed on purpose. Running CodeQL on PRs
+# caused inline `github-advanced-security[bot]` comments on every PR,
+# which is pure noise for a solo maintainer. Coverage is preserved via
+# the `push` (main) and weekly `schedule` runs; any finding still shows
+# up under Security > Code scanning alerts.
 on:
   push:
-    branches: [main]
-  pull_request:
     branches: [main]
   schedule:
     - cron: "0 6 * * 1"  # weekly on Mondays at 06:00 UTC
