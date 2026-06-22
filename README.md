@@ -279,7 +279,7 @@ Full command reference: `loghop --help` or see the [docs](https://elruleh.github
 
 ## Status
 
-- **Current version:** 0.2.0 ([changelog](CHANGELOG.md))
+- **Current version:** 0.2.1 ([changelog](CHANGELOG.md))
 - **Python requirement:** 3.12+
 - **Platforms:** Linux, macOS (primary); Windows (best-effort — core CLI works, some POSIX-specific features degrade gracefully)
 - **Test coverage:** 80%+ with CI on Python 3.12 and 3.13

@@ -12,7 +12,7 @@ license = "MIT"
 authors = [
     { name = "Ruleh", email = "ruleh@proton.me" },
 ]
-keywords = ["cli", "git", "handoff", "codex", "claude"]
+keywords = ["cli", "git", "handoff", "codex", "claude", "claude-code", "ai-coding-assistant", "context-management", "session-management", "developer-tools", "terminal", "tui", "agent-context", "anthropic", "openai"]
 urls = { Homepage = "https://github.com/elruleh/loghop", Repository = "https://github.com/elruleh/loghop", Issues = "https://github.com/elruleh/loghop/issues", Changelog = "https://github.com/elruleh/loghop/blob/main/CHANGELOG.md" }
 dependencies = [
     "rich>=14,<15",
