@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="loghop">
+  <title>loghop</title>
+  <defs>
+    <linearGradient id="lh-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050B14"/>
+      <stop offset="100%" stop-color="#101827"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#lh-bg)"/>
+  <path d="M20 43 Q31 19 45 26" fill="none" stroke="#22D3EE" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M45 26 L37 23 M45 26 L43 34" fill="none" stroke="#22D3EE" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="20" cy="43" r="6.5" fill="#22D3EE"/>
+  <circle cx="45" cy="26" r="5" fill="#050B14" stroke="#22D3EE" stroke-width="3.5"/>
+</svg>

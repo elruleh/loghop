@@ -1,7 +1,7 @@
 ---
 layout: landing
 title: loghop
-description: Switch AI coding assistants without starting over.
+description: Switch between Claude Code and Codex without losing context. loghop captures sessions, redacts secrets, and writes handoffs so the next AI assistant resumes cleanly.
 ---
 
 <section class="shell hero">
