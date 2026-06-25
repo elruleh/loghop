@@ -5,6 +5,7 @@ baseurl: /loghop
 markdown: kramdown
 plugins:
   - jekyll-relative-links
+  - jekyll-sitemap
 relative_links:
   enabled: true
   collections: false
